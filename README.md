@@ -275,3 +275,4 @@ Adres alanından arama düğmesine geçiş artık iki sorguyu tetiklemez. Aynı 
 Son fiyat düzeni: masaüstünde fiyat sağdaki iletişim panelinin başında; 900px ve altında fotoğraf galerisinin hemen altında görünür. İki gösterim CSS ile karşılıklı gizlenir. Brüt Alan ve Net Alan diğer özelliklerle aynı liste düzenindedir; arsa için tek başına büyük alan kutusu gösterilmez.
 
 Kiralık dairelerde WC sayısı isteğe bağlıdır. Boş bırakıldığında özellik gösterilmez; düzenlerken temizlenirse kayıt kaldırılır. Satılık ve diğer gayrimenkul türlerinde bu alan açılmaz.
+# mct-emlak-rize
