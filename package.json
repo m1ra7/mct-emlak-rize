@@ -1,0 +1,60 @@
+{
+  "name": "mct-emlak-rize",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts tests/*.test.mjs",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "node --import tsx db/seed/index.ts",
+    "admin:create": "node --import tsx scripts/admin.ts",
+    "storage:cleanup": "node --import tsx scripts/storage-cleanup.ts",
+    "test:http": "node scripts/http-smoke.mjs",
+    "admin:repair": "node --import tsx scripts/admin.ts --repair",
+    "admin:check": "node --import tsx scripts/admin-check.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/sora": "^5.3.0",
+    "@neondatabase/serverless": "^1.2.0",
+    "better-auth": "^1.7.7",
+    "cloudinary": "^2.11.0",
+    "drizzle-orm": "^0.45.3",
+    "lucide-react": "^1.52.0",
+    "maplibre-gl": "^6.13.0",
+    "next": "^16.3.8",
+    "nodemailer": "^10.0.14",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.6.4",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "dotenv": "^18.0.5",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.8",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "listings" ALTER COLUMN "area_m2" DROP NOT NULL;

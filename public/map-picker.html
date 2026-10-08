@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>İlan konumunu seçin</title>
+    <link rel="stylesheet" href="/vendor/maplibre-6.13.0/maplibre-gl.css" />
+    <link rel="stylesheet" href="/map-picker.css" />
+    <script type="module" src="/vector-map.js"></script>
+  </head>
+  <body>
+    <div id="map" aria-label="İlan konumunu seçmek için harita"></div>
+    <div id="hint" role="status">Dairenin bulunduğu noktaya dokunun.</div>
+    <button id="pan" type="button" aria-pressed="false">Haritayı taşı</button>
+    <div id="error" role="alert" hidden>
+      Harita yüklenemedi. Sayfayı yenileyin veya enlem ve boylamı girin.
+    </div>
+  </body>
+</html>
