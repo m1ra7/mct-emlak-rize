@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Phone,
-  MoveUpRight,
 } from "lucide-react";
 import {
   locations,
@@ -66,7 +65,7 @@ export default async function Home() {
           </p>
           <div className="hero-cta-row">
             <Link href="/ilanlar" className="button">
-              Portföyü keşfet <MoveUpRight size={18} />
+              Portföyü keşfet
             </Link>
             <Link href="/iletisim" className="hero-secondary">
               Bizi tanıyın{" "}
@@ -99,7 +98,6 @@ export default async function Home() {
               <small>İYİ BİR HAYATIN BAŞLANGICI</small>
               <strong>Doğru adresle başlar.</strong>
             </div>
-            <MoveUpRight size={21} />
           </div>
         </div>
       </section>
@@ -112,7 +110,6 @@ export default async function Home() {
               <strong>Yeni eviniz</strong>
               <small>Satılık gayrimenkuller</small>
             </span>
-            <MoveUpRight size={19} />
           </Link>
           <Link className="category-card" href="/kiralik">
             <KeyRound />
@@ -120,7 +117,6 @@ export default async function Home() {
               <strong>Yeni bir başlangıç</strong>
               <small>Kiralık yaşam alanları</small>
             </span>
-            <MoveUpRight size={19} />
           </Link>
           <Link className="category-card" href="/ilanlar">
             <LandPlot />
@@ -128,7 +124,6 @@ export default async function Home() {
               <strong>Geleceğe yatırım</strong>
               <small>Arsa ve iş yerlerini keşfedin</small>
             </span>
-            <MoveUpRight size={19} />
           </Link>
         </div>
         <section
@@ -143,7 +138,7 @@ export default async function Home() {
               </h2>
             </div>
             <Link href="/ilanlar" className="portfolio-all-link">
-              Tüm ilanlar <MoveUpRight size={20} aria-hidden="true" />
+              Tüm ilanlar
             </Link>
           </div>
           {unavailable ? (
@@ -190,7 +185,6 @@ export default async function Home() {
                     <strong>{city.name}</strong>
                     <small>{city.listingCount} aktif ilan</small>
                   </span>
-                  <MoveUpRight size={17} />
                 </Link>
               ))}
             </div>

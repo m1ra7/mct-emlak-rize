@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { discoveryCities } from "@/lib/regions";
-import { MapPin, ArrowUpRight } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { locations, publishedListingCities } from "@/lib/queries";
 import { ServiceUnavailable } from "@/components/ui";
 export const dynamic = "force-dynamic";
@@ -52,7 +52,6 @@ export default async function Regions({
                 <strong>{city.name}</strong>
                 <span>{listingCounts.get(city.id) ?? 0} aktif ilan</span>
               </div>
-              <ArrowUpRight size={20} />
             </Link>
           ))}
         {(selected
@@ -71,7 +70,6 @@ export default async function Regions({
                 {data.cities.find((city) => city.id === district.cityId)?.name}
               </span>
             </div>
-            <ArrowUpRight size={20} />
           </Link>
         ))}
       </div>

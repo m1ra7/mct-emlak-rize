@@ -6,7 +6,7 @@ import {
   Building2,
   MapPin,
   Settings2,
-  ArrowUpRight,
+  Home,
 } from "lucide-react";
 export function AdminNavigation() {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ export function AdminNavigation() {
     { href: "/admin/listings", label: "İlanlarım", Icon: Building2 },
     { href: "/admin/locations", label: "Konumlar ve türler", Icon: MapPin },
     { href: "/admin/settings", label: "İşletme profili", Icon: Settings2 },
-    { href: "/", label: "Siteyi görüntüle", Icon: ArrowUpRight },
+    { href: "/", label: "Siteyi görüntüle", Icon: Home },
   ];
   return (
     <nav className="sidebar" aria-label="Yönetim menüsü">

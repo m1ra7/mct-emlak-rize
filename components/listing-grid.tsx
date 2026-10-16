@@ -6,7 +6,6 @@ import {
   MapPin,
   BedDouble,
   Maximize,
-  ArrowUpRight,
 } from "lucide-react";
 import type { ListingResult } from "./listings";
 import { SavedButton } from "./local-favorites";
@@ -65,13 +64,6 @@ export function ListingGrid({
                     ? "Kat karşılığına uygun"
                     : money(l.price, l.currency)}
                 </span>
-                <Link
-                  href={`/ilan/${l.slug}`}
-                  className="card-arrow"
-                  aria-label={`${l.title} detayları`}
-                >
-                  <ArrowUpRight size={20} />
-                </Link>
               </div>
               <Link href={`/ilan/${l.slug}`} className="cardtitle">
                 {l.title}

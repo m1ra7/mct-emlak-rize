@@ -3944,3 +3944,16 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
     padding-inline: 14px;
   }
 }
+
+/* Link layouts without decorative diagonal arrows. */
+.category-strip > .category-card,
+.category-strip > .category-card:first-child,
+.category-strip > .category-card:last-child {
+  grid-template-columns: 44px minmax(0, 1fr);
+}
+.region-card {
+  grid-template-columns: 24px minmax(0, 1fr);
+}
+.portfolio-all-link {
+  gap: 0;
+}

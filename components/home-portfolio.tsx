@@ -86,7 +86,7 @@ export function HomePortfolio({
           <Link
             href={active === "featured" ? "/ilanlar?featured=true" : "/ilanlar"}
           >
-            {title} ilanların tümünü gör <span aria-hidden="true">↗</span>
+            {title} ilanların tümünü gör
           </Link>
         </div>
       </div>

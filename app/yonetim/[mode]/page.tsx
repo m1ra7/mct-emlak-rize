@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
@@ -49,7 +49,7 @@ export default async function Management({
       </section>
       <section className="management-form-area">
         <Link href="/" className="management-back">
-          Siteye dön <ArrowUpRight size={16} />
+          Siteye dön
         </Link>
         <div className="management-form">
           <span className="management-lock">
