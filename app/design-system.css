@@ -3961,7 +3961,7 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
   gap: 0;
 }
 
-/* Plain language links sit directly below the regional footer heading. */
+/* Compact language setting below the regional footer heading. */
 .site-footer .footer-note {
   display: block;
 }
@@ -3970,16 +3970,55 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
   padding: 0;
   border: 0;
 }
+.language-disclosure {
+  width: fit-content;
+  max-width: 100%;
+}
+.language-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 2px 0;
+  list-style: none;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 400;
+}
+.language-summary::-webkit-details-marker {
+  display: none;
+}
+.language-summary > svg {
+  flex: 0 0 auto;
+}
+.language-current {
+  margin-left: 8px;
+  font-weight: 600;
+}
+.language-chevron {
+  color: var(--muted);
+  transition: transform 0.18s ease;
+}
+.language-disclosure[open] .language-chevron {
+  transform: rotate(90deg);
+}
+.language-summary:focus-visible,
+.footer-languages .language-options a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
 .footer-languages .language-options {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  column-gap: 16px;
+  margin: 0 0 4px 28px;
 }
 .footer-languages .language-options a {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
+  min-height: 44px;
   padding: 2px 0;
   background: transparent;
   border: 0;
@@ -3997,11 +4036,6 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
 }
 .footer-languages .language-options a[aria-disabled="true"] {
   cursor: wait;
-}
-.footer-languages .language-divider {
-  color: var(--muted);
-  font-size: 12px;
-  opacity: 0.5;
 }
 @media (max-width: 1100px) {
   .site-footer .footer-note {

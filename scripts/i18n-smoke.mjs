@@ -65,6 +65,17 @@ try {
         `data-locale="${locale}"[^>]*aria-current="true"|aria-current="true"[^>]*data-locale="${locale}"`,
       ),
     );
+    const labels = {
+      tr: "Dil değiştir",
+      en: "Change language",
+      de: "Sprache ändern",
+    };
+    assert.match(html, /<details class="language-disclosure">/);
+    assert.ok(
+      html.includes(labels[locale]),
+      `${locale}: language setting label`,
+    );
+    assert.match(html, /class="language-current"/);
     const contactHtml = await (
       await fetch(base + "/iletisim", { headers: { cookie } })
     ).text();

@@ -1,5 +1,6 @@
 "use client";
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import { ChevronRight, Globe2 } from "lucide-react";
 import { useTranslations } from "./locale-provider";
 import { locales, localeNames, type Locale } from "@/lib/i18n/shared";
 export function LanguageSelector() {
@@ -29,19 +30,27 @@ export function LanguageSelector() {
   }
   return (
     <div className="footer-languages">
-      <nav
-        className="language-options"
-        aria-label={tr("Dil seçimi")}
-        aria-busy={!!pending}
-      >
-        {locales.map((code, index) => (
-          <Fragment key={code}>
-            {index > 0 && (
-              <span className="language-divider" aria-hidden="true">
-                /
-              </span>
-            )}
+      <details className="language-disclosure">
+        <summary className="language-summary">
+          <Globe2 size={20} strokeWidth={1.7} aria-hidden="true" />
+          <span>{tr("Dil değiştir")}</span>
+          <span className="language-current" lang={locale}>
+            {localeNames[locale]}
+          </span>
+          <ChevronRight
+            className="language-chevron"
+            size={18}
+            aria-hidden="true"
+          />
+        </summary>
+        <nav
+          className="language-options"
+          aria-label={tr("Dil seçimi")}
+          aria-busy={!!pending}
+        >
+          {locales.map((code) => (
             <a
+              key={code}
               href={`/api/locale?locale=${code}`}
               lang={code}
               hrefLang={code}
@@ -56,9 +65,9 @@ export function LanguageSelector() {
                 <span className="sr-only">{tr("Kaydediliyor…")}</span>
               )}
             </a>
-          </Fragment>
-        ))}
-      </nav>
+          ))}
+        </nav>
+      </details>
       {error && (
         <p role="alert">{tr("Dil değiştirilemedi. Tekrar deneyin.")}</p>
       )}

@@ -373,5 +373,6 @@
   "{count} aktif ilan::one": "{count} aktives Angebot",
   "{count} ilan bulundu::one": "{count} Immobilie gefunden",
   "{count} yer · en yakın {shown} sonuç gösteriliyor.::one": "{count} Ort · {shown} Ergebnis wird angezeigt.",
-  "{count} yer · {shown} sonuç gösteriliyor.::one": "{count} Ort · {shown} Ergebnis wird angezeigt."
+  "{count} yer · {shown} sonuç gösteriliyor.::one": "{count} Ort · {shown} Ergebnis wird angezeigt.",
+  "Dil değiştir": "Sprache ändern"
 }
