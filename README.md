@@ -327,3 +327,11 @@ Marka adı MCT Emlak Rize olarak korundu. Ana sayfa, iletişim, bölgeler, portf
 
 ### 10 Ekim — yönetim üst menüsü ve çıkış düzeltmesi
 İlan Yönetimi linki ana sayfanın hero bölümünden alınıp üst navigasyonda İletişime geç butonunun hemen sağına taşındı; sunucuda doğrulanan yetkili yönetici dışında render edilmez. Çıkış düğmesi POST /api/auth/sign-out adresine aynı-origin kimlik bilgileri ve JSON gövdesiyle istek yapar; başarılı yanıtta ana sayfayı tam yenileyerek sunucu oturumunu günceller. Gövdesiz sign-out isteği de sunucuda güvenli boş JSON olarak kabul edilir; giriş uçları JSON doğrulamasını korur. Test, Better Auth ile gerçek login ve JSON sign-out ile oturumun kapandığını doğrular. 37 test, lint ve production build geçti. Canlıya dağıtılmadı.
+
+### Türkçe / English / Deutsch
+
+Ziyaretçi arayüzü Türkçe, İngilizce ve Almanca olarak sunulur. Dil seçici footer’ın en altında bulunur. Türkçe varsayılandır; seçim bir yıllık `mct-locale` çerezinde hatırlanır. Dil değişimi mevcut sayfanın yolunu ve filtrelerini korur. Menü, ana sayfa, arama, ilan özellikleri, bölge sayıları, kaydedilenler, galeri, yakın çevre kategorileri ve harita kontrolleri yerel sözlüklerden çevrilir. Fiyatlar dönüştürülmez; sayı ve tarih biçimi dile göre değişir. Şehir, mahalle, adres ve yer adları korunur. Yönetim formlarının ana çalışma dili Türkçedir.
+
+İlana özel İngilizce ve Almanca başlık/açıklamalar yönetimde **İlan çevirileri (isteğe bağlı)** alanına girilir. Başlık en fazla 180, açıklama en fazla 1600 karakterdir. Çeviriler mevcut `listing_features` tablosunda `i18n.en.title`, `i18n.en.description`, `i18n.de.title`, `i18n.de.description` anahtarlarıyla saklanır; yeni migration veya ücretli çeviri servisi gerekmez. Çevirisi olmayan alan orijinal Türkçe içerikle gösterilir ve açıklama alanında bu durum belirtilir. Serbest yazılan özel özellik adları için `lib/i18n/en.json` ve `de.json` sözlüklerine karşılık eklenebilir.
+
+Doğrulama: `npm test`, `npm run typecheck`, `npm run lint`, ardından `npm run build` ve `node scripts/i18n-smoke.mjs`. Son komut yerel sunucuda üç dil için çerez → sayfa → iletişim → kaydedilenler akışını ve sayfanın en altındaki dil seçiciyi kontrol eder.

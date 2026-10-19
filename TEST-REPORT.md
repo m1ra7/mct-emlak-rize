@@ -140,3 +140,12 @@ ESLint ve üretim derlemesi geçti. HTTP smoke testi anonim silme 401 ve yabanc�
 ### Arsa + OpenMapTiles + yakın çevre
 Üretim derlemesi, TypeScript ve 12 test grubu geçti. Yeni arsa kaydı konut alanları olmadan PGlite üzerinde kaydedildi; yanlış tür ile arsa bayrağı reddedildi. Pazarlık/imar/kat karşılığı özelliklerinin kayıt yoluna gönderilmesi test fixture'ında yer alır. Mesafe, kategori, kopya kayıt eleme ve geçersiz koordinatları reddetme testleri geçti. Vektör harita tıklama/sürükleme ve salt okunur konum VM testinden geçti; gerçek WebGL tarayıcı testi değildir.
 Canlı Overpass denemesi bu ortamdan HTTP 406 döndü; canlı yer sonuçları ve OSRM araç süreleri doğrulanamadı. Gerçek Neon/Vercel ve mobil görsel kabul testi yapılmadı.
+
+## 2026-10-19 — TR / EN / DE dil desteği
+
+- Ziyaretçi arayüzünün Türkçe, İngilizce ve Almanca sözlükleri; yer tutucuların korunması, tekil/çoğul ilan sayıları ve bilinmeyen özel adların değiştirilmemesi doğrulandı.
+- Dil uç noktasının yalnızca `tr`, `en`, `de` kabul ettiği, seçimi çereze yazdığı ve form dönüşlerinin başka alan adına yönlenemediği test edildi. Yerel sunucu adının normalize edildiği durumda da tarayıcının mevcut sayfası ve filtreleri korunur.
+- İlan başlığı/açıklaması çevirileri mevcut veritabanı şemasıyla kaydedildi ve ilan liste sorgusunda geri okundu. Eksik çeviriler alan bazında Türkçe orijinale döner.
+- `npm test`: 41 test başarılı. `npm run lint` ve üretim derlemesindeki TypeScript kontrolü başarılı.
+- Üretim sunucusu HTTP kontrolü: üç dil için çerez → ana sayfa → iletişim → kaydedilenler; footer sonundaki dil seçici; geçersiz dil reddi; JavaScript olmadan form gönderiminde aynı sayfa/filtrelere dönüş doğrulandı.
+- Canlı Neon hesabının verileri ve fiziksel mobil cihaz görüntüsü bu ortamda kullanılmadı. Veri kaydetme/sorgulama kontrolleri PostgreSQL uyumlu PGlite üzerinde, sayfa kontrolleri yerel üretim sunucusunda çalıştırıldı.

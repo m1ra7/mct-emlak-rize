@@ -1,12 +1,14 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 export default function ErrorPage({ reset }: { reset: () => void }) {
+  const { tr } = useTranslations();
   return (
     <div className="wrap">
       <div className="empty">
-        <h1 style={{ fontSize: 32 }}>İşlem tamamlanamadı</h1>
-        <p>Lütfen biraz sonra tekrar deneyin.</p>
+        <h1 style={{ fontSize: 32 }}>{tr("İşlem tamamlanamadı")}</h1>
+        <p>{tr("Lütfen biraz sonra tekrar deneyin.")}</p>
         <button className="button" onClick={reset}>
-          Tekrar dene
+          {tr("Tekrar dene")}{" "}
         </button>
       </div>
     </div>

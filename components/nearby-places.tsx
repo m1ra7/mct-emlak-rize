@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   nearbyVisible,
@@ -7,10 +8,6 @@ import {
 } from "@/lib/nearby";
 import { NearbyCategories } from "./nearby-categories";
 import { listingMap } from "@/lib/listing-map";
-const formatDistance = (meters: number) =>
-  meters < 1000
-    ? `${meters} m`
-    : `${(meters / 1000).toLocaleString("tr-TR", { maximumFractionDigits: 1 })} km`;
 export function NearbyPlaces({
   id,
   latitude,
@@ -28,6 +25,11 @@ export function NearbyPlaces({
   approximateLocation?: boolean;
   approximateCenter?: { latitude: string; longitude: string } | null;
 }) {
+  const { tr, locale, intlLocale } = useTranslations();
+  const formatDistance = (meters: number) =>
+    meters < 1000
+      ? `${meters} m`
+      : `${(meters / 1000).toLocaleString(intlLocale, { maximumFractionDigits: 1 })} km`;
   const [places, setPlaces] = useState<NearbyPlace[] | null>(null);
   const [partial, setPartial] = useState(false);
   const [limitedCoverage, setLimitedCoverage] = useState(false);
@@ -186,9 +188,9 @@ export function NearbyPlaces({
   if (latitude === null || longitude === null)
     return (
       <section className="panel nearby-section">
-        <h2>Çevrede Neler Var?</h2>
+        <h2>{tr("Çevrede Neler Var?")}</h2>
         <p className="quiet">
-          Yakındaki yerler için ilan konumu henüz kaydedilmemiş.
+          {tr("Yakındaki yerler için ilan konumu henüz kaydedilmemiş.")}{" "}
         </p>
       </section>
     );
@@ -204,22 +206,23 @@ export function NearbyPlaces({
   });
   return (
     <section className="panel nearby-section" ref={section} aria-busy={busy}>
-      <h2>Konum</h2>
+      <h2>{tr("Konum")}</h2>
       <p className="quiet">{address}</p>
       <div className="nearby-map-wrap">
         <iframe
           ref={frame}
           className="listing-map"
-          title="İlan ve yakın çevredeki yerler"
-          src={`${map.embed}&kind=${land ? "land" : "home"}`}
+          title={tr("İlan ve yakın çevredeki yerler")}
+          src={`${map.embed}&kind=${land ? "land" : "home"}&lang=${locale}`}
           onLoad={sync}
           loading="lazy"
         />
         {(approximateLocation ||
           (approximateCenter && latitude === null && longitude === null)) && (
           <p className="quiet map-note">
-            Açık adres için kesin bina noktası bulunamadı; yaklaşık bölge daire
-            içinde gösteriliyor.
+            {tr(
+              "Açık adres için kesin bina noktası bulunamadı; yaklaşık bölge daire içinde gösteriliyor.",
+            )}{" "}
           </p>
         )}
         <a
@@ -228,14 +231,14 @@ export function NearbyPlaces({
           target="_blank"
           rel="noopener noreferrer"
         >
-          İlan konumunu büyük haritada aç
+          {tr("İlan konumunu büyük haritada aç")}{" "}
         </a>
       </div>
-      <h2>Çevrede Neler Var?</h2>
+      <h2>{tr("Çevrede Neler Var?")}</h2>
       <p className="quiet">
-        5 km çevresindeki haritaya kayıtlı yerler. Rota mesafeleri ve süreleri
-        servis verileridir; araç süresi canlı trafiği içermez. Rota bulunamazsa
-        yalnızca kuş uçuşu mesafe gösterilir.
+        {tr(
+          "5 km çevresindeki haritaya kayıtlı yerler. Rota mesafeleri ve süreleri servis verileridir; araç süresi canlı trafiği içermez. Rota bulunamazsa yalnızca kuş uçuşu mesafe gösterilir.",
+        )}{" "}
       </p>
       <NearbyCategories
         category={category}
@@ -252,28 +255,36 @@ export function NearbyPlaces({
       {places !== null && (
         <p className="quiet" role="status">
           {category === "Tümü"
-            ? `${categoryCounts["Tümü"] || 0} yer · en yakın ${visible.length} sonuç gösteriliyor.`
-            : `${categoryCounts[category] || 0}${limitedCategories.includes(category) ? "+" : ""} yer · ${visible.length} sonuç gösteriliyor.`}
+            ? tr("{count} yer · en yakın {shown} sonuç gösteriliyor.", {
+                count: categoryCounts["Tümü"] || 0,
+                shown: visible.length,
+              })
+            : tr("{count} yer · {shown} sonuç gösteriliyor.", {
+                count: `${categoryCounts[category] || 0}${limitedCategories.includes(category) ? "+" : ""}`,
+                shown: visible.length,
+              })}
         </p>
       )}
       {category === "Tümü" &&
         count >= nearbyResultLimit &&
         (categoryCounts[category] || 0) > visible.length && (
           <p className="quiet">
-            Diğer sonuçları görmek için bir kategori seçin.
+            {tr("Diğer sonuçları görmek için bir kategori seçin.")}{" "}
           </p>
         )}
       {limitedCoverage && (
         <p className="quiet" role="status">
-          Yakındaki yerler alternatif harita kaynağından gösteriliyor. Bu kaynak
-          bölgedeki tüm yerleri içermeyebilir.
+          {tr(
+            "Yakındaki yerler alternatif harita kaynağından gösteriliyor. Bu kaynak bölgedeki tüm yerleri içermeyebilir.",
+          )}{" "}
         </p>
       )}
       {partial && (
         <div role="status">
           <p className="quiet">
-            Servis yanıtı eksik geldi. Bulunan yerler gösteriliyor; diğer yerler
-            için yeniden deneyebilirsiniz.
+            {tr(
+              "Servis yanıtı eksik geldi. Bulunan yerler gösteriliyor; diğer yerler için yeniden deneyebilirsiniz.",
+            )}{" "}
           </p>
           <button
             type="button"
@@ -281,36 +292,36 @@ export function NearbyPlaces({
             onClick={() => void load()}
             disabled={busy}
           >
-            Yeniden yükle
+            {tr("Yeniden yükle")}{" "}
           </button>
         </div>
       )}
       {routeBusy && (
         <p className="quiet" role="status">
-          Yol mesafeleri ve süreler yükleniyor…
+          {tr("Yol mesafeleri ve süreler yükleniyor…")}{" "}
         </p>
       )}
       {routeError && (
         <p className="quiet" role="status">
-          {routeError}
+          {tr(routeError)}
         </p>
       )}
       <div className="nearby-list">
         {busy && (
           <p role="status" className="quiet">
-            Yakın çevredeki yerler yükleniyor…
+            {tr("Yakın çevredeki yerler yükleniyor…")}{" "}
           </p>
         )}
         {error && (
           <div role="alert">
-            <p className="alert">{error}</p>
+            <p className="alert">{tr(error)}</p>
             <button
               type="button"
               className="button secondary"
               onClick={() => void load()}
               disabled={busy}
             >
-              Tekrar dene
+              {tr("Tekrar dene")}{" "}
             </button>
           </div>
         )}
@@ -331,7 +342,7 @@ export function NearbyPlaces({
                 );
               }}
             >
-              <small>{p.category}</small>
+              <small>{tr(p.category)}</small>
               <h3>{p.name}</h3>
               <strong>
                 {formatDistance(
@@ -342,21 +353,27 @@ export function NearbyPlaces({
                 {" "}
                 ·{" "}
                 {p.walkDistance !== undefined
-                  ? "yaya yolu"
+                  ? tr("yaya yolu")
                   : p.driveDistance !== undefined
-                    ? "araç yolu"
-                    : "kuş uçuşu"}
+                    ? tr("araç yolu")
+                    : tr("kuş uçuşu")}
               </span>
               <p className="quiet">
                 {p.walkMinutes !== undefined
-                  ? `Yürüyerek: ${p.walkMinutes} dk · ${formatDistance(p.walkDistance!)}`
-                  : "Yaya rotası mevcut değil"}
+                  ? tr("Yürüyerek: {minutes} dk · {distance}", {
+                      minutes: p.walkMinutes,
+                      distance: formatDistance(p.walkDistance!),
+                    })
+                  : tr("Yaya rotası mevcut değil")}
                 <br />
                 {p.driveMinutes !== undefined
-                  ? `Arabayla: ${p.driveMinutes} dk · ${formatDistance(p.driveDistance!)}`
-                  : "Araç rotası mevcut değil"}
+                  ? tr("Arabayla: {minutes} dk · {distance}", {
+                      minutes: p.driveMinutes,
+                      distance: formatDistance(p.driveDistance!),
+                    })
+                  : tr("Araç rotası mevcut değil")}
               </p>
-              <span className="text-link">Haritada göster</span>
+              <span className="text-link">{tr("Haritada göster")}</span>
             </button>
             <a
               className="text-link"
@@ -364,7 +381,7 @@ export function NearbyPlaces({
               target="_blank"
               rel="noopener noreferrer"
             >
-              Yol tarifi
+              {tr("Yol tarifi")}{" "}
             </a>
           </article>
         ))}
@@ -377,19 +394,21 @@ export function NearbyPlaces({
                 setCount((n) => Math.min(nearbyResultLimit, n + 12))
               }
             >
-              Daha fazla yer göster
+              {tr("Daha fazla yer göster")}{" "}
             </button>
           )}
         {places !== null && !busy && !error && !visible.length && (
           <p className="quiet">
-            Bu kategoride harita verisine kayıtlı yer bulunamadı.
+            {tr("Bu kategoride harita verisine kayıtlı yer bulunamadı.")}{" "}
           </p>
         )}
       </div>
       <p className="quiet map-attribution">
-        Veriler: © OpenStreetMap katkıda bulunanlar. Rota:{" "}
-        {"OSRM / openrouteservice"}. Sonuçlar kuş uçuşu yakınlığa göre
-        sıralanır; harita kayıtları eksik olabilir.
+        {tr("Veriler: © OpenStreetMap katkıda bulunanlar. Rota:")}{" "}
+        {tr("OSRM / openrouteservice")}
+        {tr(
+          ". Sonuçlar kuş uçuşu yakınlığa göre sıralanır; harita kayıtları eksik olabilir.",
+        )}{" "}
       </p>
     </section>
   );

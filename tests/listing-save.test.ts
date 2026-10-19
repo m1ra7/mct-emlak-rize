@@ -192,7 +192,30 @@ test("İlan formu → JSON → doğrulama → veritabanı: yayınla, düzenle, h
       listingType: "kiralik",
     });
     await saveListing(database, owner, { ...parsed, status: "draft" });
+    await saveListing(
+      database,
+      owner,
+      {
+        ...parsed,
+        features: [
+          { name: "i18n.en.title", value: "Apartment in Rize" },
+          {
+            name: "i18n.de.description",
+            value: "Eine Wohnung mit Meerblick in Rize.",
+          },
+        ],
+      },
+      saved.id,
+    );
     const sales = await queryListings(database, { type: "satilik" });
+    assert.equal(
+      sales.items[0].translations["i18n.en.title"],
+      "Apartment in Rize",
+    );
+    assert.equal(
+      sales.items[0].translations["i18n.de.description"],
+      "Eine Wohnung mit Meerblick in Rize.",
+    );
     const rentals = await queryListings(database, { type: "kiralik" });
     assert.equal(sales.total, 1);
     assert.deepEqual(

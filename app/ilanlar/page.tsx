@@ -1,3 +1,4 @@
+import { getTranslations } from "@/lib/i18n/server";
 import Link from "next/link";
 import { LayoutGrid, List } from "lucide-react";
 import { locations, searchListings, type SearchParams } from "@/lib/queries";
@@ -5,10 +6,14 @@ import { Cards, Pagination } from "@/components/listings";
 import { Filters } from "@/components/filters";
 import { ServiceUnavailable } from "@/components/ui";
 export const dynamic = "force-dynamic";
-export const metadata = {
+const baseMetadata = {
   title: "İlanlar",
   alternates: { canonical: "/ilanlar" },
 };
+export async function generateMetadata() {
+  const { tr } = await getTranslations();
+  return { ...baseMetadata, title: tr("İlanlar") };
+}
 export default async function Listings({
   searchParams,
   forcedType,
@@ -16,6 +21,7 @@ export default async function Listings({
   searchParams: Promise<SearchParams>;
   forcedType?: "satilik" | "kiralik";
 }) {
+  const { tr } = await getTranslations();
   if (!process.env.DATABASE_URL) return <ServiceUnavailable />;
   const incoming = await searchParams;
   let p = forcedType ? { ...incoming, type: forcedType } : incoming;
@@ -40,19 +46,20 @@ export default async function Listings({
   return (
     <div className="wrap portfolio-page">
       <div className="page-intro">
-        <span className="eyebrow">YENİ ADRESİNİZİ KEŞFEDİN</span>
+        <span className="eyebrow">{tr("YENİ ADRESİNİZİ KEŞFEDİN")}</span>
         <h1>
           {p.type === "satilik"
-            ? "Satılık gayrimenkuller"
+            ? tr("Satılık gayrimenkuller")
             : p.type === "kiralik"
-              ? "Kiralık gayrimenkuller"
+              ? tr("Kiralık gayrimenkuller")
               : p.featured === "true"
-                ? "Öne çıkan ilanlar"
-                : "Portföyü keşfedin."}
+                ? tr("Öne çıkan ilanlar")
+                : tr("Portföyü keşfedin.")}
         </h1>
         <p className="quiet">
-          Karadeniz ağırlıklı, Türkiye’nin farklı şehirlerine uzanan
-          portföyümüzden size uygun gayrimenkulü keşfedin.
+          {tr(
+            "Karadeniz ağırlıklı, Türkiye’nin farklı şehirlerine uzanan portföyümüzden size uygun gayrimenkulü keşfedin.",
+          )}{" "}
         </p>
       </div>
       <div className="portfolio-layout">
@@ -62,27 +69,32 @@ export default async function Listings({
           style={{ width: "100%", minWidth: 0 }}
         >
           <div className="row between results-header">
-            <span>
-              <strong>{result.total}</strong> ilan bulundu
-            </span>
+            <span>{tr("{count} ilan bulundu", { count: result.total })}</span>
             <span className="quiet">
-              Sayfa {result.page} / {Math.max(result.pages, 1)}
+              {tr("Sayfa {page} / {pages}", {
+                page: result.page,
+                pages: Math.max(result.pages, 1),
+              })}
             </span>
           </div>
           {featuredFallback && (
             <p className="portfolio-notice">
-              Henüz öne çıkan ilan işaretlenmemiş. Yayındaki ilanları
-              görüntülüyorsunuz.
+              {tr(
+                "Henüz öne çıkan ilan işaretlenmemiş. Yayındaki ilanları görüntülüyorsunuz.",
+              )}{" "}
             </p>
           )}
-          <nav className="listing-view-options" aria-label="İlan görünümü">
+          <nav
+            className="listing-view-options"
+            aria-label={tr("İlan görünümü")}
+          >
             <Link
               href={viewHref("grid")}
               className="button secondary"
               aria-current={view === "grid" ? "page" : undefined}
             >
               <LayoutGrid size={18} />
-              Yan yana kartlar
+              {tr("Yan yana kartlar")}{" "}
             </Link>
             <Link
               href={viewHref("list")}
@@ -90,7 +102,7 @@ export default async function Listings({
               aria-current={view === "list" ? "page" : undefined}
             >
               <List size={18} />
-              Alt alta liste
+              {tr("Alt alta liste")}{" "}
             </Link>
           </nav>
           <Cards items={result.items} view={view} />

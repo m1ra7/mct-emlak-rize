@@ -3751,7 +3751,10 @@ html[data-theme="dark"] .home-portfolio-segments button[aria-selected="true"] {
   color: #17372d;
   box-shadow: 0 3px 12px rgb(0 0 0 / 28%);
 }
-html[data-theme="dark"] .home-portfolio-segments button[aria-selected="false"] span {
+html[data-theme="dark"]
+  .home-portfolio-segments
+  button[aria-selected="false"]
+  span {
   background: #263640;
   color: #c0ccd2;
 }
@@ -3956,4 +3959,112 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
 }
 .portfolio-all-link {
   gap: 0;
+}
+
+/* Language controls live at the very bottom, with comfortable mobile targets. */
+.footer-languages {
+  border-top: 1px solid var(--line);
+  padding: 20px 0 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-languages form {
+  display: flex;
+  justify-content: flex-end;
+}
+.footer-languages fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.footer-languages legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.language-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.language-options button {
+  min-height: 44px;
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+}
+.language-options button[aria-pressed="true"] {
+  color: var(--green);
+  border-color: var(--green);
+  background: var(--mint);
+  font-weight: 700;
+}
+.language-options button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.listing-translations {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+}
+.listing-translations summary {
+  cursor: pointer;
+  font-weight: 650;
+  min-height: 30px;
+}
+.listing-translations fieldset {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0 0;
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+.translation-note {
+  font-size: 13px;
+  border-left: 2px solid var(--line);
+  padding-left: 12px;
+}
+html[lang="de"] .hero-overline,
+html[lang="de"] .eyebrow {
+  letter-spacing: 0.07em;
+}
+html:not([lang="tr"]) .home-hero h1 {
+  font-size: clamp(38px, 4.8vw, 76px);
+  overflow-wrap: normal;
+}
+@media (max-width: 640px) {
+  .footer-languages {
+    margin-inline: 20px;
+  }
+  .footer-languages form,
+  .footer-languages fieldset {
+    width: 100%;
+  }
+  .language-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .language-options button {
+    padding-inline: 8px;
+  }
+  html:not([lang="tr"]) .home-hero h1 {
+    font-size: clamp(34px, 9vw, 50px);
+  }
+  html[lang="de"] .nav-contact span {
+    display: none;
+  }
+  html:not([lang="tr"]) .home-portfolio-segments button {
+    white-space: normal;
+    min-width: 0;
+  }
 }

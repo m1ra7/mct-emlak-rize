@@ -1,7 +1,9 @@
+"use client";
+import { useTranslations } from "@/components/locale-provider";
 import { ListingGrid } from "./listing-grid";
 import Link from "next/link";
 
-import { searchListings, type SearchParams } from "@/lib/queries";
+import type { searchListings, SearchParams } from "@/lib/queries";
 
 export type ListingResult = Awaited<ReturnType<typeof searchListings>>;
 export function Cards({
@@ -22,6 +24,7 @@ export function Pagination({
   p: SearchParams;
   base?: string;
 }) {
+  const { tr } = useTranslations();
   if (result.pages <= 1) return null;
   function href(page: number) {
     const q = new URLSearchParams();
@@ -40,10 +43,10 @@ export function Pagination({
     ]),
   ].filter((n) => n > 0 && n <= result.pages);
   return (
-    <nav className="pagination" aria-label="Sayfalar">
+    <nav className="pagination" aria-label={tr("Sayfalar")}>
       {result.page > 1 && (
         <Link className="button secondary" href={href(result.page - 1)}>
-          Önceki
+          {tr("Önceki")}{" "}
         </Link>
       )}
       {pages.map((n) => (
@@ -58,7 +61,7 @@ export function Pagination({
       ))}
       {result.page < result.pages && (
         <Link className="button secondary" href={href(result.page + 1)}>
-          Sonraki
+          {tr("Sonraki")}{" "}
         </Link>
       )}
     </nav>

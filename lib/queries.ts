@@ -171,6 +171,9 @@ export async function queryListings<T extends PgQueryResultHKT>(
       district: districts.name,
       property: propertyTypes.name,
       image: listingImages.imageUrl,
+      translations: sql<
+        Record<string, string>
+      >`coalesce((select jsonb_object_agg(f.name, f.value) from listing_features f where f.listing_id = ${listings.id} and f.name like 'i18n.%'), '{}'::jsonb)`,
       landExchange: sql<boolean>`exists (select 1 from listing_features f where f.listing_id = ${listings.id} and f.name = 'Kat karşılığı' and f.value = 'Evet')`,
     })
     .from(listings)

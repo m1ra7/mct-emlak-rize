@@ -1,12 +1,10 @@
+"use client";
+import { listingText } from "@/lib/listing-i18n";
+import { useTranslations } from "@/components/locale-provider";
 import { isLandType } from "@/lib/property-kind";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Building2,
-  MapPin,
-  BedDouble,
-  Maximize,
-} from "lucide-react";
+import { Building2, MapPin, BedDouble, Maximize } from "lucide-react";
 import type { ListingResult } from "./listings";
 import { SavedButton } from "./local-favorites";
 import { Empty, money } from "./ui";
@@ -17,13 +15,22 @@ export function ListingGrid({
   items: ListingResult["items"];
   view?: "grid" | "list";
 }) {
+  const { tr, locale, intlLocale } = useTranslations();
   if (!items.length) return <Empty />;
   return (
     <div
       className={`listing-cards ${view === "list" ? "listing-cards-list" : ""}`}
     >
       {items.map(
-        ({ listing: l, city, district, image, property, landExchange }) => (
+        ({
+          listing: l,
+          city,
+          district,
+          image,
+          property,
+          landExchange,
+          translations,
+        }) => (
           <article className="card" key={l.id}>
             <div className="photo">
               <Link href={`/ilan/${l.slug}`} tabIndex={-1}>
@@ -37,20 +44,22 @@ export function ListingGrid({
                         : "(max-width: 759px) 100vw, (max-width: 1100px) 50vw, (max-width: 1400px) 33vw, 440px"
                     }
                     src={image}
-                    alt={l.title}
+                    alt={listingText(l, locale, translations).title}
                     loading="lazy"
                   />
                 ) : (
                   <div className="no-photo">
                     <Building2 size={38} />
-                    <span>Fotoğraf eklenmemiş</span>
+                    <span>{tr("Fotoğraf eklenmemiş")}</span>
                   </div>
                 )}
               </Link>
-              {l.featured && <span className="featured-label">Öne çıkan</span>}
+              {l.featured && (
+                <span className="featured-label">{tr("Öne çıkan")}</span>
+              )}
               <span className="tag">
-                {l.listingType === "satilik" ? "Satılık" : "Kiralık"} ·{" "}
-                {property}
+                {l.listingType === "satilik" ? tr("Satılık") : tr("Kiralık")} ·{" "}
+                {tr(property)}
               </span>
               <SavedButton id={l.id} />
             </div>
@@ -61,12 +70,12 @@ export function ListingGrid({
               <div className="card-price-row">
                 <span className="price">
                   {landExchange
-                    ? "Kat karşılığına uygun"
-                    : money(l.price, l.currency)}
+                    ? tr("Kat karşılığına uygun")
+                    : money(l.price, l.currency, intlLocale)}
                 </span>
               </div>
               <Link href={`/ilan/${l.slug}`} className="cardtitle">
-                {l.title}
+                {listingText(l, locale, translations).title}
               </Link>
               <div className="row quiet" style={{ gap: 5, fontSize: 14 }}>
                 <MapPin size={15} />
@@ -81,12 +90,14 @@ export function ListingGrid({
                 )}
                 <span>
                   <Maximize size={15} />
-                  {l.areaM2 == null ? "Alan belirtilmemiş" : `${l.areaM2} m²`}
+                  {l.areaM2 == null
+                    ? tr("Alan belirtilmemiş")
+                    : `${l.areaM2} m²`}
                 </span>
                 {!isLandType({ name: property }) && (
                   <span>
                     <Building2 size={15} />
-                    {l.floor}. kat
+                    {tr("{floor}. kat", { floor: l.floor })}
                   </span>
                 )}
               </div>

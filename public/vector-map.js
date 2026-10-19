@@ -1,3 +1,4 @@
+import { mapTr, mapLocale } from "/map-language.js";
 import {
   Map,
   Marker,
@@ -54,9 +55,9 @@ try {
     scrollZoom: false,
     dragPan: !mobile,
     locale: {
-      "NavigationControl.ZoomIn": "Yakınlaştır",
-      "NavigationControl.ZoomOut": "Uzaklaştır",
-      "NavigationControl.ResetBearing": "Kuzeye dön",
+      "NavigationControl.ZoomIn": mapTr("Yakınlaştır"),
+      "NavigationControl.ZoomOut": mapTr("Uzaklaştır"),
+      "NavigationControl.ResetBearing": mapTr("Kuzeye dön"),
     },
   });
   map.setMaxBounds?.([
@@ -97,8 +98,9 @@ try {
           center: [lng, lat],
           zoom: Number(params.get("zoom")) || 14,
         });
-        hint.textContent =
-          "İlanın yaklaşık bulunduğu bölge daire içinde gösteriliyor.";
+        hint.textContent = mapTr(
+          "İlanın yaklaşık bulunduğu bölge daire içinde gösteriliyor.",
+        );
       }
     }
   });
@@ -106,7 +108,7 @@ try {
   pan.addEventListener("click", () => {
     const active = pan.getAttribute("aria-pressed") !== "true";
     pan.setAttribute("aria-pressed", String(active));
-    pan.textContent = active ? "Sayfayı kaydır" : "Haritayı taşı";
+    pan.textContent = active ? mapTr("Sayfayı kaydır") : mapTr("Haritayı taşı");
     if (active) map.dragPan.enable();
     else map.dragPan.disable();
     container.style.touchAction = active ? "none" : "pan-y";
@@ -117,7 +119,7 @@ try {
       const home = document.createElement("div");
       home.className = "listing-marker";
       home.textContent = params.get("kind") === "land" ? "▧" : "⌂";
-      home.setAttribute("aria-label", "İlan konumu");
+      home.setAttribute("aria-label", mapTr("İlan konumu"));
       marker = new Marker({ element: home, draggable: !readOnly })
         .setLngLat([lng, lat])
         .addTo(map);
@@ -127,8 +129,8 @@ try {
       });
     } else marker.setLngLat([lng, lat]);
     hint.textContent = readOnly
-      ? "İlanın kaydedilen konumu"
-      : "İğne seçildi. İlanı kaydederek konumu saklayın.";
+      ? mapTr("İlanın kaydedilen konumu")
+      : mapTr("İğne seçildi. İlanı kaydederek konumu saklayın.");
     if (notify)
       parent.postMessage({ type: "mct-location", lat, lng }, location.origin);
   };
@@ -200,12 +202,12 @@ try {
         icon.type = "button";
         icon.className = "poi-marker";
         icon.textContent = icons[p.category];
-        icon.setAttribute("aria-label", `${p.name} · ${p.category}`);
+        icon.setAttribute("aria-label", `${p.name} · ${mapTr(p.category)}`);
         const card = document.createElement("div");
         const name = document.createElement("strong"),
           detail = document.createElement("p");
         name.textContent = p.name;
-        detail.textContent = `${p.category} · ${p.distance < 1000 ? `${p.distance} m` : `${(p.distance / 1000).toFixed(1)} km`} kuş uçuşu`;
+        detail.textContent = `${mapTr(p.category)} · ${p.distance < 1000 ? `${p.distance} m` : `${(p.distance / 1000).toLocaleString(mapLocale, { maximumFractionDigits: 1 })} km`} ${mapTr("kuş uçuşu")}`;
         card.append(name, detail);
         const pointMarker = new Marker({ element: icon })
           .setLngLat([p.lon, p.lat])
@@ -231,8 +233,9 @@ try {
         const source = map.getSource?.("approximate-region");
         if (source) source.setData(regionCircle(lat, lng));
         map.jumpTo({ center: [lng, lat], zoom: 16 });
-        hint.textContent =
-          "Yaklaşık bölge daire içinde gösteriliyor. Binanın bulunduğu noktaya dokunarak iğne yerleştirin.";
+        hint.textContent = mapTr(
+          "Yaklaşık bölge daire içinde gösteriliyor. Binanın bulunduğu noktaya dokunarak iğne yerleştirin.",
+        );
       }
       return;
     }
@@ -249,7 +252,7 @@ try {
     ) {
       marker?.remove();
       marker = undefined;
-      hint.textContent = "Dairenin bulunduğu noktaya dokunun.";
+      hint.textContent = mapTr("Dairenin bulunduğu noktaya dokunun.");
       return;
     }
     const old = marker?.getLngLat();
@@ -266,8 +269,9 @@ try {
   });
   parent.postMessage({ type: "mct-map-ready" }, location.origin);
   map.on("error", () => {
-    hint.textContent =
-      "Harita katmanı yüklenemedi. Bağlantınızı kontrol edin; kayıtlı koordinatlar korunur.";
+    hint.textContent = mapTr(
+      "Harita katmanı yüklenemedi. Bağlantınızı kontrol edin; kayıtlı koordinatlar korunur.",
+    );
   });
 } catch {
   container.hidden = true;

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Building2, ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
@@ -15,6 +16,7 @@ export function ListingGallery({
   images: Photo[];
   title: string;
 }) {
+  const { tr } = useTranslations();
   const photos = [...images].sort(
     (a, b) => Number(b.isPrimary) - Number(a.isPrimary),
   );
@@ -40,16 +42,16 @@ export function ListingGallery({
     return (
       <div className="property-gallery-empty">
         <Building2 size={36} />
-        <span>Fotoğraf eklenmemiş</span>
+        <span>{tr("Fotoğraf eklenmemiş")}</span>
       </div>
     );
   return (
-    <section className="property-gallery" aria-label="İlan fotoğrafları">
+    <section className="property-gallery" aria-label={tr("İlan fotoğrafları")}>
       <button
         className="property-photo"
         type="button"
         onClick={() => setOpen(true)}
-        aria-label={`${selected + 1}. fotoğrafı büyüt`}
+        aria-label={tr("{count}. fotoğrafı büyüt", { count: selected + 1 })}
       >
         <Image
           src={active.imageUrl}
@@ -59,19 +61,19 @@ export function ListingGallery({
           preload={selected === 0}
         />
         <span className="photo-expand">
-          <Expand size={18} /> Büyüt
+          <Expand size={18} /> {tr("Büyüt")}{" "}
         </span>
         <span className="photo-counter">
           {selected + 1} / {photos.length}
         </span>
       </button>
-      <div className="photo-thumbnails" aria-label="Tüm fotoğraflar">
+      <div className="photo-thumbnails" aria-label={tr("Tüm fotoğraflar")}>
         {photos.map((photo, index) => (
           <button
             key={photo.id}
             type="button"
             className="photo-thumbnail"
-            aria-label={`${index + 1}. fotoğrafı göster`}
+            aria-label={tr("{count}. fotoğrafı göster", { count: index + 1 })}
             aria-pressed={index === selected}
             onClick={() => setSelected(index)}
           >
@@ -87,7 +89,7 @@ export function ListingGallery({
       <dialog
         ref={dialog}
         className="photo-dialog"
-        aria-label={`${title} fotoğraf galerisi`}
+        aria-label={tr("{title} fotoğraf galerisi", { title })}
         onCancel={(e) => {
           e.preventDefault();
           setOpen(false);
@@ -109,12 +111,12 @@ export function ListingGallery({
         <div className="photo-dialog-content">
           <div className="photo-dialog-header">
             <span aria-live="polite">
-              Fotoğraf {selected + 1} / {photos.length}
+              {tr("Fotoğraf")} {selected + 1} / {photos.length}
             </span>
             <button
               type="button"
               className="photo-control"
-              aria-label="Galeriyi kapat"
+              aria-label={tr("Galeriyi kapat")}
               onClick={() => setOpen(false)}
             >
               <X />
@@ -145,7 +147,7 @@ export function ListingGallery({
                 <button
                   type="button"
                   className="photo-control photo-previous"
-                  aria-label="Önceki fotoğraf"
+                  aria-label={tr("Önceki fotoğraf")}
                   onClick={() => move(-1)}
                 >
                   <ChevronLeft />
@@ -153,7 +155,7 @@ export function ListingGallery({
                 <button
                   type="button"
                   className="photo-control photo-next"
-                  aria-label="Sonraki fotoğraf"
+                  aria-label={tr("Sonraki fotoğraf")}
                   onClick={() => move(1)}
                 >
                   <ChevronRight />
@@ -167,7 +169,7 @@ export function ListingGallery({
                 key={photo.id}
                 type="button"
                 className="photo-thumbnail"
-                aria-label={`${index + 1}. fotoğrafı aç`}
+                aria-label={tr("{count}. fotoğrafı aç", { count: index + 1 })}
                 aria-pressed={index === selected}
                 onClick={() => setSelected(index)}
               >

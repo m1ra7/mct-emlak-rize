@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import { useSyncExternalStore } from "react";
 import { Sun, Moon } from "lucide-react";
 import { themeKey, validTheme, type Theme } from "@/lib/theme";
@@ -30,14 +31,15 @@ function serverTheme(): Theme {
   return "dark";
 }
 export function ThemeToggle() {
+  const { tr } = useTranslations();
   const theme = useSyncExternalStore(subscribe, current, serverTheme);
   const dark = theme === "dark";
   return (
     <button
       type="button"
       className="theme-toggle"
-      title={dark ? "Açık temaya geç" : "Koyu temaya geç"}
-      aria-label={dark ? "Açık temaya geç" : "Koyu temaya geç"}
+      title={dark ? tr("Açık temaya geç") : tr("Koyu temaya geç")}
+      aria-label={dark ? tr("Açık temaya geç") : tr("Koyu temaya geç")}
       aria-pressed={dark}
       onClick={() => {
         const next = dark ? "light" : "dark";
@@ -49,7 +51,9 @@ export function ThemeToggle() {
       }}
     >
       {dark ? <Sun size={18} /> : <Moon size={18} />}
-      <span className="sr-only">{dark ? "Açık tema" : "Koyu tema"}</span>
+      <span className="sr-only">
+        {dark ? tr("Açık tema") : tr("Koyu tema")}
+      </span>
     </button>
   );
 }

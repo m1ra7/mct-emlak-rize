@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import { useSyncExternalStore, useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import type { ListingResult } from "./listings";
@@ -40,6 +41,7 @@ function get() {
   }
 }
 export function SavedButton({ id }: { id: string }) {
+  const { tr } = useTranslations();
   const ids = useSyncExternalStore(subscribe, get, () => empty);
   const [error, setError] = useState("");
   const selected = ids.includes(id);
@@ -47,8 +49,10 @@ export function SavedButton({ id }: { id: string }) {
     <>
       <button
         className={`fav ${selected ? "selected" : ""}`}
-        aria-label={selected ? "Kaydedilenlerden çıkar" : "İlanı kaydet"}
-        title={selected ? "Kaydedilenlerden çıkar" : "İlanı kaydet"}
+        aria-label={
+          selected ? tr("Kaydedilenlerden çıkar") : tr("İlanı kaydet")
+        }
+        title={selected ? tr("Kaydedilenlerden çıkar") : tr("İlanı kaydet")}
         aria-pressed={selected}
         onClick={() => {
           try {
@@ -72,13 +76,14 @@ export function SavedButton({ id }: { id: string }) {
       </button>
       {error && (
         <span className="alert" role="alert">
-          {error}
+          {tr(error)}
         </span>
       )}
     </>
   );
 }
 export function SavedListings() {
+  const { tr } = useTranslations();
   const ids = useSyncExternalStore(subscribe, get, () => empty);
   const key = ids.join(",");
   const [response, setResponse] = useState<{
@@ -119,7 +124,7 @@ export function SavedListings() {
         </div>
       ) : error ? (
         <p className="alert" role="alert">
-          {error}
+          {tr(error)}
         </p>
       ) : items.length ? (
         <ListingGrid items={items} />
@@ -127,8 +132,8 @@ export function SavedListings() {
         <Empty
           title={
             ids.length
-              ? "Bu ilanlar artık yayında olmayabilir."
-              : "Henüz bir ilan kaydetmediniz."
+              ? tr("Bu ilanlar artık yayında olmayabilir.")
+              : tr("Henüz bir ilan kaydetmediniz.")
           }
           text="Beğendiğiniz ilanların kalp simgesine dokunun. Kaydettiğiniz ilanlar bu tarayıcıda saklanır."
           href="/ilanlar"

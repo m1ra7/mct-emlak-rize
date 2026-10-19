@@ -1,21 +1,27 @@
+import { getTranslations } from "@/lib/i18n/server";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 export const dynamic = "force-dynamic";
-export const metadata = {
+const baseMetadata = {
   title: "İletişim",
   alternates: { canonical: "/iletisim" },
 };
-export default function Contact() {
+export async function generateMetadata() {
+  const { tr } = await getTranslations();
+  return { ...baseMetadata, title: tr("İletişim") };
+}
+export default async function Contact() {
+  const { tr } = await getTranslations();
   const phone = process.env.CONTACT_PHONE?.replace(/[^+0-9]/g, "");
   const email = process.env.CONTACT_EMAIL;
   return (
     <div className="wrap">
-      <span className="eyebrow">MCT EMLAK RİZE</span>
-      <h1 style={{ fontSize: 40 }}>İletişim</h1>
+      <span className="eyebrow">{tr("MCT EMLAK RİZE")}</span>
+      <h1 style={{ fontSize: 40 }}>{tr("İletişim")}</h1>
       <p className="quiet">
-        MCT Emlak Rize olarak öncelikle Rize ve Karadeniz bölgesinde, ayrıca
-        Türkiye’nin farklı şehirlerinde gayrimenkul ilanları sunuyoruz.
-        Aradığınız şehri ve gayrimenkulü bize anlatın.
+        {tr(
+          "MCT Emlak Rize olarak öncelikle Rize ve Karadeniz bölgesinde, ayrıca Türkiye’nin farklı şehirlerinde gayrimenkul ilanları sunuyoruz. Aradığınız şehri ve gayrimenkulü bize anlatın.",
+        )}{" "}
       </p>
       <div className="panel stack">
         <p className="row">
@@ -34,7 +40,7 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              WhatsApp ile iletişim
+              {tr("WhatsApp ile iletişim")}{" "}
             </a>
           </>
         )}
@@ -45,11 +51,12 @@ export default function Contact() {
           </a>
         )}
         <p className="quiet">
-          Portföyümüzdeki konut, arsa ve iş yerleri hakkında bilgi almak için
-          doğrudan MCT Emlak Rize ile iletişime geçebilirsiniz.
+          {tr(
+            "Portföyümüzdeki konut, arsa ve iş yerleri hakkında bilgi almak için doğrudan MCT Emlak Rize ile iletişime geçebilirsiniz.",
+          )}{" "}
         </p>
         <Link className="button" href="/ilanlar">
-          İlanlara göz at
+          {tr("İlanlara göz at")}{" "}
         </Link>
       </div>
     </div>

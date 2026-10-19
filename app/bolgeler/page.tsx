@@ -1,18 +1,24 @@
+import { getTranslations } from "@/lib/i18n/server";
 import Link from "next/link";
 import { discoveryCities } from "@/lib/regions";
 import { MapPin } from "lucide-react";
 import { locations, publishedListingCities } from "@/lib/queries";
 import { ServiceUnavailable } from "@/components/ui";
 export const dynamic = "force-dynamic";
-export const metadata = {
+const baseMetadata = {
   title: "Bölgeler",
   alternates: { canonical: "/bolgeler" },
 };
+export async function generateMetadata() {
+  const { tr } = await getTranslations();
+  return { ...baseMetadata, title: tr("Bölgeler") };
+}
 export default async function Regions({
   searchParams,
 }: {
   searchParams: Promise<{ city?: string }>;
 }) {
+  const { tr } = await getTranslations();
   if (!process.env.DATABASE_URL) return <ServiceUnavailable />;
   const [data, listingCities] = await Promise.all([
     locations(),
@@ -26,17 +32,26 @@ export default async function Regions({
   return (
     <div className="wrap regions-page">
       <div className="page-intro">
-        <span className="eyebrow">KONUMUNUZU SEÇİN</span>
-        <h1>{selected ? `${selected.name} ilçeleri` : "İlleri keşfedin."}</h1>
+        <span className="eyebrow">{tr("KONUMUNUZU SEÇİN")}</span>
+        <h1>
+          {selected
+            ? tr("{city} ilçeleri", { city: selected.name })
+            : tr("İlleri keşfedin.")}
+        </h1>
         <p className="quiet">
           {selected
-            ? `${listingCounts.get(selected.id) ?? 0} aktif ilan var. İlçeyi seçerek bölgedeki ilanları görüntüleyin.`
-            : "Karadeniz’den başlayın, Türkiye’nin 81 ilini keşfedin. Bir il seçerek ilçelerine ulaşabilirsiniz."}
+            ? tr(
+                "{count} aktif ilan var. İlçeyi seçerek bölgedeki ilanları görüntüleyin.",
+                { count: listingCounts.get(selected.id) ?? 0 },
+              )
+            : tr(
+                "Karadeniz’den başlayın, Türkiye’nin 81 ilini keşfedin. Bir il seçerek ilçelerine ulaşabilirsiniz.",
+              )}
         </p>
       </div>
       {selected && (
         <Link className="text-link" href="/bolgeler">
-          ← Bütün iller
+          {tr("← Bütün iller")}{" "}
         </Link>
       )}
       <div className="region-cards">
@@ -50,7 +65,11 @@ export default async function Regions({
               <MapPin size={22} />
               <div>
                 <strong>{city.name}</strong>
-                <span>{listingCounts.get(city.id) ?? 0} aktif ilan</span>
+                <span>
+                  {tr("{count} aktif ilan", {
+                    count: listingCounts.get(city.id) ?? 0,
+                  })}
+                </span>
               </div>
             </Link>
           ))}
@@ -74,7 +93,7 @@ export default async function Regions({
         ))}
       </div>
       {!data.districts.length && (
-        <p className="quiet">Henüz bölge eklenmemiş.</p>
+        <p className="quiet">{tr("Henüz bölge eklenmemiş.")}</p>
       )}
     </div>
   );

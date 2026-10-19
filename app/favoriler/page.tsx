@@ -1,17 +1,24 @@
+import { getTranslations } from "@/lib/i18n/server";
 import { SavedListings } from "@/components/local-favorites";
-export const metadata = {
+const baseMetadata = {
   title: "Kaydedilen ilanlar",
   robots: { index: false },
 };
-export default function Favorites() {
+export async function generateMetadata() {
+  const { tr } = await getTranslations();
+  return { ...baseMetadata, title: tr("Kaydedilen ilanlar") };
+}
+export default async function Favorites() {
+  const { tr } = await getTranslations();
   return (
     <div className="wrap">
       <div className="page-intro">
-        <span className="eyebrow">SİZE ÖZEL SEÇKİ</span>
-        <h1>Gözünüzün kaldığı yerler.</h1>
+        <span className="eyebrow">{tr("SİZE ÖZEL SEÇKİ")}</span>
+        <h1>{tr("Gözünüzün kaldığı yerler.")}</h1>
         <p className="quiet">
-          Beğendiğiniz ilanlar burada. Üyelik gerektirmez; yalnızca bu
-          tarayıcıda saklanır.
+          {tr(
+            "Beğendiğiniz ilanlar burada. Üyelik gerektirmez; yalnızca bu tarayıcıda saklanır.",
+          )}{" "}
         </p>
       </div>
       <SavedListings />

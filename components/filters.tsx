@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import { useNeighborhoods } from "./use-neighborhoods";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -15,6 +16,7 @@ export function Filters({
   p?: SearchParams;
   compact?: boolean;
 }) {
+  const { tr } = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const get = (k: string) => (typeof p[k] === "string" ? (p[k] as string) : "");
@@ -28,16 +30,16 @@ export function Filters({
   const fields = (
     <>
       <div className="field">
-        <label htmlFor={compact ? "h-q" : "q"}>Ne arıyorsunuz?</label>
+        <label htmlFor={compact ? "h-q" : "q"}>{tr("Ne arıyorsunuz?")}</label>
         <input
           id={compact ? "h-q" : "q"}
           name="q"
           defaultValue={get("q")}
-          placeholder="İlan başlığı, açıklama"
+          placeholder={tr("İlan başlığı, açıklama")}
         />
       </div>
       <div className="field">
-        <label htmlFor={`${compact ? "h-" : ""}type`}>İlan türü</label>
+        <label htmlFor={`${compact ? "h-" : ""}type`}>{tr("İlan türü")}</label>
         <select
           id={`${compact ? "h-" : ""}type`}
           name="type"
@@ -47,14 +49,14 @@ export function Filters({
             setProperty("");
           }}
         >
-          <option value="">Satılık ve kiralık</option>
-          <option value="satilik">Satılık</option>
-          <option value="kiralik">Kiralık</option>
+          <option value="">{tr("Satılık ve kiralık")}</option>
+          <option value="satilik">{tr("Satılık")}</option>
+          <option value="kiralik">{tr("Kiralık")}</option>
         </select>
       </div>
       <div className="field">
         <label htmlFor={`${compact ? "h-" : ""}property`}>
-          Gayrimenkul türü
+          {tr("Gayrimenkul türü")}{" "}
         </label>
         <select
           id={`${compact ? "h-" : ""}property`}
@@ -62,7 +64,7 @@ export function Filters({
           value={property}
           onChange={(e) => setProperty(e.target.value)}
         >
-          <option value="">Tüm türler</option>
+          <option value="">{tr("Tüm türler")}</option>
           {data.types
             .filter((t) =>
               type === "satilik"
@@ -73,13 +75,13 @@ export function Filters({
             )
             .map((t) => (
               <option key={t.id} value={t.id}>
-                {t.name}
+                {tr(t.name)}
               </option>
             ))}
         </select>
       </div>
       <div className="field">
-        <label htmlFor={`${compact ? "h-" : ""}city`}>İl</label>
+        <label htmlFor={`${compact ? "h-" : ""}city`}>{tr("İl")}</label>
         <select
           id={`${compact ? "h-" : ""}city`}
           name="city"
@@ -90,7 +92,7 @@ export function Filters({
             setNeighborhood("");
           }}
         >
-          <option value="">Tüm iller</option>
+          <option value="">{tr("Tüm iller")}</option>
           {data.cities.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -99,7 +101,7 @@ export function Filters({
         </select>
       </div>
       <div className="field">
-        <label htmlFor={`${compact ? "h-" : ""}district`}>İlçe</label>
+        <label htmlFor={`${compact ? "h-" : ""}district`}>{tr("İlçe")}</label>
         <select
           id={`${compact ? "h-" : ""}district`}
           name="district"
@@ -109,7 +111,7 @@ export function Filters({
             setNeighborhood("");
           }}
         >
-          <option value="">Tüm ilçeler</option>
+          <option value="">{tr("Tüm ilçeler")}</option>
           {data.districts
             .filter((d) => !city || d.cityId === city)
             .map((d) => (
@@ -120,17 +122,19 @@ export function Filters({
         </select>
       </div>
       {neighborhoodOptions.error && (
-        <p role="alert">{neighborhoodOptions.error}</p>
+        <p role="alert">{tr(neighborhoodOptions.error)}</p>
       )}
       <div className="field">
-        <label htmlFor={`${compact ? "h-" : ""}neighborhood`}>Mahalle</label>
+        <label htmlFor={`${compact ? "h-" : ""}neighborhood`}>
+          {tr("Mahalle")}
+        </label>
         <select
           id={`${compact ? "h-" : ""}neighborhood`}
           name="neighborhood"
           value={neighborhood}
           onChange={(e) => setNeighborhood(e.target.value)}
         >
-          <option value="">Tüm mahalleler</option>
+          <option value="">{tr("Tüm mahalleler")}</option>
           {neighborhoodOptions.rows
             .filter((n) => n.districtId === district)
             .map((n) => (
@@ -141,13 +145,15 @@ export function Filters({
         </select>
       </div>
       <div className="field">
-        <label htmlFor={`${compact ? "h-" : ""}rooms`}>Oda sayısı</label>
+        <label htmlFor={`${compact ? "h-" : ""}rooms`}>
+          {tr("Oda sayısı")}
+        </label>
         <select
           id={`${compact ? "h-" : ""}rooms`}
           name="rooms"
           defaultValue={get("rooms")}
         >
-          <option value="">Tümü</option>
+          <option value="">{tr("Tümü")}</option>
           {["1+0", "1+1", "2+1", "3+1", "4+1", "5+1", "6+1"].map((r) => (
             <option key={r}>{r}</option>
           ))}
@@ -174,10 +180,10 @@ export function Filters({
           onClick={() => setOpen(!open)}
         >
           <SlidersHorizontal size={18} />
-          {open ? "Gelişmiş aramayı kapat" : "Gelişmiş arama"}
+          {open ? tr("Gelişmiş aramayı kapat") : tr("Gelişmiş arama")}
         </button>
         <div className="portfolio-sort">
-          <label htmlFor={`${compact ? "h-" : ""}sort`}>Sıralama</label>
+          <label htmlFor={`${compact ? "h-" : ""}sort`}>{tr("Sıralama")}</label>
           <select
             id={`${compact ? "h-" : ""}sort`}
             onChange={(event) => {
@@ -190,12 +196,12 @@ export function Filters({
             }}
             defaultValue={get("sort") || "newest"}
           >
-            <option value="newest">En yeni</option>
-            <option value="oldest">En eski</option>
-            <option value="priceAsc">Fiyat düşükten yükseğe</option>
-            <option value="priceDesc">Fiyat yüksekten düşüğe</option>
-            <option value="areaAsc">m² küçükten büyüğe</option>
-            <option value="areaDesc">m² büyükten küçüğe</option>
+            <option value="newest">{tr("En yeni")}</option>
+            <option value="oldest">{tr("En eski")}</option>
+            <option value="priceAsc">{tr("Fiyat düşükten yükseğe")}</option>
+            <option value="priceDesc">{tr("Fiyat yüksekten düşüğe")}</option>
+            <option value="areaAsc">{tr("m² küçükten büyüğe")}</option>
+            <option value="areaDesc">{tr("m² büyükten küçüğe")}</option>
           </select>
         </div>
       </div>
@@ -212,7 +218,9 @@ export function Filters({
             {fields}
             {(compact ? numbers.slice(0, 2) : numbers).map(([k, label]) => (
               <div className="field" key={k}>
-                <label htmlFor={`${compact ? "h-" : ""}${k}`}>{label}</label>
+                <label htmlFor={`${compact ? "h-" : ""}${k}`}>
+                  {tr(label)}
+                </label>
                 <input
                   id={`${compact ? "h-" : ""}${k}`}
                   name={k}
@@ -227,17 +235,19 @@ export function Filters({
               <>
                 <div className="field">
                   <label htmlFor={`${compact ? "h-" : ""}heating`}>
-                    Isıtma
+                    {tr("Isıtma")}{" "}
                   </label>
                   <select
                     id={`${compact ? "h-" : ""}heating`}
                     name="heating"
                     defaultValue={get("heating")}
                   >
-                    <option value="">Tümü</option>
+                    <option value="">{tr("Tümü")}</option>
                     {["Doğalgaz", "Merkezi", "Klima", "Soba", "Yok"].map(
                       (t) => (
-                        <option key={t}>{t}</option>
+                        <option key={t} value={t}>
+                          {tr(t)}
+                        </option>
                       ),
                     )}
                   </select>
@@ -257,7 +267,7 @@ export function Filters({
                       value="true"
                       defaultChecked={get(key) === "true"}
                     />
-                    {label}
+                    {tr(label)}
                   </label>
                 ))}
               </>
@@ -268,7 +278,7 @@ export function Filters({
                 style={{ width: "100%" }}
                 type="submit"
               >
-                {compact ? "İlanları bul" : "Sonuçları göster"}
+                {compact ? tr("İlanları bul") : tr("Sonuçları göster")}
               </button>
               {!compact && (
                 <Link
@@ -280,7 +290,7 @@ export function Filters({
                     textAlign: "center",
                   }}
                 >
-                  Filtreleri temizle
+                  {tr("Filtreleri temizle")}{" "}
                 </Link>
               )}
             </div>
@@ -291,7 +301,7 @@ export function Filters({
               className="button secondary"
               onClick={() => setOpen(false)}
             >
-              Kapat
+              {tr("Kapat")}{" "}
             </button>
           )}
         </form>

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { nearbyCategories } from "@/lib/nearby";
@@ -13,6 +14,7 @@ export function NearbyCategories({
   counts?: Record<string, number>;
   limitedCategories?: string[];
 }) {
+  const { tr } = useTranslations();
   const track = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({
     overflow: false,
@@ -55,7 +57,7 @@ export function NearbyCategories({
       <button
         type="button"
         className="nearby-scroll-arrow"
-        aria-label="Kategorileri sola kaydır"
+        aria-label={tr("Kategorileri sola kaydır")}
         disabled={!edges.left}
         onClick={() => move(-1)}
       >
@@ -64,12 +66,12 @@ export function NearbyCategories({
       <div
         className="nearby-tabs"
         ref={track}
-        aria-label="Yakın çevre kategorileri"
+        aria-label={tr("Yakın çevre kategorileri")}
       >
         {nearbyCategories.map((x) => (
           <button
             type="button"
-            key={x}
+            key={tr(x)}
             aria-pressed={category === x}
             onClick={() => onSelect(x)}
             onFocus={(e) => {
@@ -83,7 +85,7 @@ export function NearbyCategories({
                 node.scrollBy({ left: a.right - b.right });
             }}
           >
-            {x}
+            {tr(x)}
             {counts[x] !== undefined
               ? ` (${counts[x]}${limitedCategories.includes(x) ? "+" : ""})`
               : ""}
@@ -93,7 +95,7 @@ export function NearbyCategories({
       <button
         type="button"
         className="nearby-scroll-arrow"
-        aria-label="Kategorileri sağa kaydır"
+        aria-label={tr("Kategorileri sağa kaydır")}
         disabled={!edges.right}
         onClick={() => move(1)}
       >

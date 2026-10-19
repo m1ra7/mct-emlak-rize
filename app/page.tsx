@@ -1,3 +1,4 @@
+import { getTranslations } from "@/lib/i18n/server";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -18,6 +19,7 @@ import { HomePortfolio } from "@/components/home-portfolio";
 import { HomeSearch } from "@/components/home-search";
 export const dynamic = "force-dynamic";
 export default async function Home() {
+  const { tr } = await getTranslations();
   let data: Awaited<ReturnType<typeof locations>> = {
     cities: [],
     districts: [],
@@ -51,24 +53,23 @@ export default async function Home() {
       <section className="home-hero">
         <div className="hero-copy">
           <span className="hero-overline">
-            <span /> RİZE’DEN TÜRKİYE’YE
+            <span /> {tr("RİZE’DEN TÜRKİYE’YE")}{" "}
           </span>
           <h1>
-            Yaşamınıza
-            <br />
-            <span>yeni bir yer.</span>
+            {tr("Yaşamınıza")} <br />
+            <span>{tr("yeni bir yer.")}</span>
           </h1>
           <p>
-            Karadeniz ağırlıklı portföyümüz ve Türkiye’nin farklı şehirlerindeki
-            ilanlarımızla evinizi, iş yerinizi veya yatırımınızı birlikte
-            bulalım.
+            {tr(
+              "Karadeniz ağırlıklı portföyümüz ve Türkiye’nin farklı şehirlerindeki ilanlarımızla evinizi, iş yerinizi veya yatırımınızı birlikte bulalım.",
+            )}{" "}
           </p>
           <div className="hero-cta-row">
             <Link href="/ilanlar" className="button">
-              Portföyü keşfet
+              {tr("Portföyü keşfet")}{" "}
             </Link>
             <Link href="/iletisim" className="hero-secondary">
-              Bizi tanıyın{" "}
+              {tr("Bizi tanıyın")}{" "}
               <span>
                 <Phone size={17} />
               </span>
@@ -78,7 +79,9 @@ export default async function Home() {
         <div className="hero-visual">
           <Image
             src="/images/coastal-residence.webp"
-            alt="Karadeniz kıyısından ilham alan çağdaş bir evin mimari konsepti"
+            alt={tr(
+              "Karadeniz kıyısından ilham alan çağdaş bir evin mimari konsepti",
+            )}
             fill
             priority
             sizes="(max-width: 800px) 100vw, 55vw"
@@ -86,17 +89,18 @@ export default async function Home() {
           />
           <div className="visual-top">
             <span>
-              <MapPin size={15} /> Rize merkezli · Karadeniz ağırlıklı
+              <MapPin size={15} />{" "}
+              {tr("Rize merkezli · Karadeniz ağırlıklı")}{" "}
             </span>
-            <span className="visual-index">01 / YAŞAM</span>
+            <span className="visual-index">{tr("01 / YAŞAM")}</span>
           </div>
           <div className="visual-card">
             <span className="visual-card-icon">
               <Building2 size={23} />
             </span>
             <div>
-              <small>İYİ BİR HAYATIN BAŞLANGICI</small>
-              <strong>Doğru adresle başlar.</strong>
+              <small>{tr("İYİ BİR HAYATIN BAŞLANGICI")}</small>
+              <strong>{tr("Doğru adresle başlar.")}</strong>
             </div>
           </div>
         </div>
@@ -107,22 +111,22 @@ export default async function Home() {
           <Link className="category-card" href="/satilik">
             <Building2 />
             <span>
-              <strong>Yeni eviniz</strong>
-              <small>Satılık gayrimenkuller</small>
+              <strong>{tr("Yeni eviniz")}</strong>
+              <small>{tr("Satılık gayrimenkuller")}</small>
             </span>
           </Link>
           <Link className="category-card" href="/kiralik">
             <KeyRound />
             <span>
-              <strong>Yeni bir başlangıç</strong>
-              <small>Kiralık yaşam alanları</small>
+              <strong>{tr("Yeni bir başlangıç")}</strong>
+              <small>{tr("Kiralık yaşam alanları")}</small>
             </span>
           </Link>
           <Link className="category-card" href="/ilanlar">
             <LandPlot />
             <span>
-              <strong>Geleceğe yatırım</strong>
-              <small>Arsa ve iş yerlerini keşfedin</small>
+              <strong>{tr("Geleceğe yatırım")}</strong>
+              <small>{tr("Arsa ve iş yerlerini keşfedin")}</small>
             </span>
           </Link>
         </div>
@@ -132,20 +136,21 @@ export default async function Home() {
         >
           <div className="section-heading">
             <div>
-              <span className="eyebrow">PORTFÖY / KEŞFET</span>
+              <span className="eyebrow">{tr("PORTFÖY / KEŞFET")}</span>
               <h2 id="home-listings-title">
-                Hayalinizdeki yer, <span>biraz daha yakın.</span>
+                {tr("Hayalinizdeki yer,")}{" "}
+                <span>{tr("biraz daha yakın.")}</span>
               </h2>
             </div>
             <Link href="/ilanlar" className="portfolio-all-link">
-              Tüm ilanlar
+              {tr("Tüm ilanlar")}{" "}
             </Link>
           </div>
           {unavailable ? (
             <div className="empty">
               <Building2 size={30} />
-              <h3>İlanlar şu anda yüklenemiyor.</h3>
-              <p>Lütfen biraz sonra tekrar deneyin.</p>
+              <h3>{tr("İlanlar şu anda yüklenemiyor.")}</h3>
+              <p>{tr("Lütfen biraz sonra tekrar deneyin.")}</p>
             </div>
           ) : (
             <HomePortfolio featured={featured} latest={latest} />
@@ -153,27 +158,25 @@ export default async function Home() {
         </section>
         <section className="editorial-section" id="bolgeler">
           <div className="editorial-copy">
-            <span className="eyebrow">KARADENİZ’DEN BAŞLAYIN</span>
+            <span className="eyebrow">{tr("KARADENİZ’DEN BAŞLAYIN")}</span>
             <h2>
-              Şehrin ritmi.
-              <br />
-              Doğanın huzuru.
-              <br />
-              <span>Türkiye’de yeni adresler.</span>
+              {tr("Şehrin ritmi.")} <br />
+              {tr("Doğanın huzuru.")} <br />
+              <span>{tr("Türkiye’de yeni adresler.")}</span>
             </h2>
             <p>
-              Rize ve Karadeniz’den başlayıp Türkiye’nin farklı şehirlerine
-              uzanan portföyümüzde, yayında ilan bulunan şehirleri keşfedin.
-              Aradığınız şehri seçerek o bölgedeki ilanlara ulaşın.
+              {tr(
+                "Rize ve Karadeniz’den başlayıp Türkiye’nin farklı şehirlerine uzanan portföyümüzde, yayında ilan bulunan şehirleri keşfedin. Aradığınız şehri seçerek o bölgedeki ilanlara ulaşın.",
+              )}{" "}
             </p>
             <Link href="/bolgeler" className="button secondary">
-              Bütün bölgeleri keşfet
+              {tr("Bütün bölgeleri keşfet")}{" "}
             </Link>
           </div>
           <div className="region-panel">
             <div className="region-heading">
               <MapPin size={24} />
-              <span>KARADENİZ’DEN KEŞFEDİN</span>
+              <span>{tr("KARADENİZ’DEN KEŞFEDİN")}</span>
             </div>
             <div className="districts">
               {listingCities.map((city, i) => (
@@ -183,16 +186,20 @@ export default async function Home() {
                   </span>
                   <span className="city-row-info">
                     <strong>{city.name}</strong>
-                    <small>{city.listingCount} aktif ilan</small>
+                    <small>
+                      {tr("{count} aktif ilan", { count: city.listingCount })}
+                    </small>
                   </span>
                 </Link>
               ))}
             </div>
             {!listingCities.length ? (
-              <p className="quiet">Şu anda yayında ilan bulunan şehir yok.</p>
+              <p className="quiet">
+                {tr("Şu anda yayında ilan bulunan şehir yok.")}
+              </p>
             ) : (
               <div className="region-footer">
-                Bu şehirlerdeki yayındaki ilanları görüntüleyin.
+                {tr("Bu şehirlerdeki yayındaki ilanları görüntüleyin.")}{" "}
               </div>
             )}
           </div>
@@ -200,34 +207,43 @@ export default async function Home() {
         <section className="values-row">
           <div>
             <ShieldCheck />
-            <h3>Kararınız netleşsin.</h3>
+            <h3>{tr("Kararınız netleşsin.")}</h3>
             <p>
-              İlanın konumunu, özelliklerini ve fiyatını aynı yerde inceleyin.
+              {tr(
+                "İlanın konumunu, özelliklerini ve fiyatını aynı yerde inceleyin.",
+              )}{" "}
             </p>
           </div>
           <div>
             <SlidersHorizontal />
-            <h3>Tam size göre.</h3>
-            <p>Bütçenize ve yaşamınıza uyan seçeneklere filtrelerle ulaşın.</p>
+            <h3>{tr("Tam size göre.")}</h3>
+            <p>
+              {tr(
+                "Bütçenize ve yaşamınıza uyan seçeneklere filtrelerle ulaşın.",
+              )}
+            </p>
           </div>
           <div>
             <Phone />
-            <h3>Bir konuşmayla başlar.</h3>
-            <p>Telefon veya WhatsApp üzerinden doğrudan iletişime geçin.</p>
+            <h3>{tr("Bir konuşmayla başlar.")}</h3>
+            <p>
+              {tr("Telefon veya WhatsApp üzerinden doğrudan iletişime geçin.")}
+            </p>
           </div>
         </section>
         <section className="contact-band owner-contact-band">
           <div>
-            <span className="eyebrow">MCT EMLAK İLE ÇALIŞIN</span>
-            <h2>Gayrimenkulünüzü bize emanet edin.</h2>
+            <span className="eyebrow">{tr("MCT EMLAK İLE ÇALIŞIN")}</span>
+            <h2>{tr("Gayrimenkulünüzü bize emanet edin.")}</h2>
           </div>
           <div>
             <p>
-              Evinizi, arsanızı veya iş yerinizi satmak ya da kiralamak için bize
-              ulaşın. Gayrimenkulünüzü MCT Emlak Rize portföyünde değerlendirelim.
+              {tr(
+                "Evinizi, arsanızı veya iş yerinizi satmak ya da kiralamak için bize ulaşın. Gayrimenkulünüzü MCT Emlak Rize portföyünde değerlendirelim.",
+              )}{" "}
             </p>
             <Link href="/iletisim" className="button">
-              Gayrimenkulüm için danışmanlık al <Phone size={17} />
+              {tr("Gayrimenkulüm için danışmanlık al")} <Phone size={17} />
             </Link>
           </div>
         </section>

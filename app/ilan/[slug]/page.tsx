@@ -1,3 +1,5 @@
+import { listingText } from "@/lib/listing-i18n";
+import { getTranslations } from "@/lib/i18n/server";
 import { NearbyPlaces } from "@/components/nearby-places";
 import { isLandType } from "@/lib/property-kind";
 import { ListingGallery } from "@/components/listing-gallery";
@@ -30,18 +32,28 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { tr, locale } = await getTranslations();
   if (!process.env.DATABASE_URL)
-    return { title: "İlan", robots: { index: false } };
+    return { title: tr("İlan"), robots: { index: false } };
   const r = await listingDetail((await params).slug);
   if (!r || r.listing.status !== "published")
-    return { title: "İlan", robots: { index: false, follow: false } };
+    return { title: tr("İlan"), robots: { index: false, follow: false } };
+  const translationFeatures = await db()
+    .select()
+    .from(listingFeatures)
+    .where(eq(listingFeatures.listingId, r.listing.id));
+  const content = listingText(
+    r.listing,
+    locale,
+    Object.fromEntries(translationFeatures.map((f) => [f.name, f.value])),
+  );
   return {
-    title: r.listing.title,
-    description: r.listing.description.slice(0, 160),
+    title: content.title,
+    description: content.description.slice(0, 160),
     alternates: { canonical: `/ilan/${r.listing.slug}` },
     openGraph: {
-      title: r.listing.title,
-      description: r.listing.description.slice(0, 160),
+      title: content.title,
+      description: content.description.slice(0, 160),
       images: r.images[0] ? [r.images[0].imageUrl] : [],
     },
   };
@@ -51,6 +63,7 @@ export default async function Detail({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const { tr, locale, intlLocale } = await getTranslations();
   if (!process.env.DATABASE_URL) notFound();
   const r = await listingDetail((await params).slug);
   if (!r) notFound();
@@ -69,6 +82,11 @@ export default async function Detail({
       .where(eq(listingFeatures.listingId, l.id)),
   ]);
 
+  const localized = listingText(
+    l,
+    locale,
+    Object.fromEntries(features.map((f) => [f.name, f.value])),
+  );
   const phone = (r.owner.phone || process.env.CONTACT_PHONE)?.replace(
     /[^+0-9]/g,
     "",
@@ -114,19 +132,20 @@ export default async function Detail({
       ]),
   ].filter(
     ([name]) =>
-      !land ||
-      ![
-        "Oda",
-        "Bina yaşı",
-        "Bulunduğu kat",
-        "Toplam kat",
-        "Isıtma",
-        "Banyo",
-        "Balkon",
-        "Asansör",
-        "Eşyalı",
-        "Site içerisinde",
-      ].includes(name),
+      !name.startsWith("i18n.") &&
+      (!land ||
+        ![
+          "Oda",
+          "Bina yaşı",
+          "Bulunduğu kat",
+          "Toplam kat",
+          "Isıtma",
+          "Banyo",
+          "Balkon",
+          "Asansör",
+          "Eşyalı",
+          "Site içerisinde",
+        ].includes(name)),
   );
   let approximateCenter: { latitude: string; longitude: string } | null = null;
   if (l.latitude === null || l.longitude === null) {
@@ -176,30 +195,34 @@ export default async function Detail({
     <div className="wrap">
       {l.status === "published" && <ViewTracker id={l.id} />}
       <div className="breadcrumbs">
-        <Link href="/">Ana sayfa</Link> / <Link href="/ilanlar">İlanlar</Link> /{" "}
-        {r.district}
+        <Link href="/">{tr("Ana sayfa")}</Link> /{" "}
+        <Link href="/ilanlar">{tr("İlanlar")}</Link> / {r.district}
       </div>
       {l.status !== "published" && (
         <div className="publication-notice">
           <div>
-            <strong>Bu ilan henüz yayında değil.</strong>
+            <strong>{tr("Bu ilan henüz yayında değil.")}</strong>
             <p>
-              Önizlemeyi yalnızca siz görebilirsiniz. İlanı aşağıdaki düğmeyle
-              doğrudan yayınlayabilirsiniz.
+              {tr(
+                "Önizlemeyi yalnızca siz görebilirsiniz. İlanı aşağıdaki düğmeyle doğrudan yayınlayabilirsiniz.",
+              )}{" "}
             </p>
           </div>
           <PublicationActions id={l.id} status={l.status} />
           <Link href={`/admin/listings/${l.id}`} className="text-link">
-            İlanı düzenle
+            {tr("İlanı düzenle")}{" "}
           </Link>
         </div>
       )}
       <div className="row between">
         <div>
           <span className="eyebrow">
-            {l.listingType === "satilik" ? "SATILIK" : "KİRALIK"} · {r.property}
+            {l.listingType === "satilik" ? tr("SATILIK") : tr("KİRALIK")} ·{" "}
+            {tr(r.property)}
           </span>
-          <h1 className="listing-detail-title">{l.title}</h1>
+          <h1 className="listing-detail-title" lang={localized.titleLanguage}>
+            {localized.title}
+          </h1>
           <p className="row quiet">
             <MapPin size={18} />
             {r.city}, {r.district}
@@ -207,11 +230,11 @@ export default async function Detail({
         </div>
         <SavedButton id={l.id} />
       </div>
-      <ListingGallery images={r.images} title={l.title} />
+      <ListingGallery images={r.images} title={localized.title} />
       <strong className="price detail-mobile-price">
         {features.some((f) => f.name === "Kat karşılığı" && f.value === "Evet")
-          ? "Kat karşılığına uygun"
-          : money(l.price, l.currency)}
+          ? tr("Kat karşılığına uygun")
+          : money(l.price, l.currency, intlLocale)}
       </strong>
 
       <div className="detail-grid">
@@ -230,7 +253,7 @@ export default async function Detail({
                 ).map(([name, value, Icon]) => (
                   <div key={String(name)}>
                     <Icon size={21} />
-                    <span>{String(name)}</span>
+                    <span>{tr(String(name))}</span>
                     <strong>{String(value)}</strong>
                   </div>
                 ))}
@@ -251,8 +274,8 @@ export default async function Detail({
                 )
                 .map(([k, v]) => (
                   <div key={k}>
-                    <dt>{k}</dt>
-                    <dd>{v}</dd>
+                    <dt>{tr(k)}</dt>
+                    <dd>{tr(v)}</dd>
                   </div>
                 ))}
             </dl>
@@ -271,20 +294,29 @@ export default async function Detail({
                 }
                 return tags.length ? (
                   <section className="property-feature-section" key={f.id}>
-                    <h3>{f.name}</h3>
+                    <h3>{tr(f.name)}</h3>
                     <div className="property-tag-list">
                       {tags.map((tag) => (
-                        <span key={tag}>{tag}</span>
+                        <span key={tag}>{tr(tag)}</span>
                       ))}
                     </div>
                   </section>
                 ) : null;
               })}
-            <h2 style={{ marginTop: 30 }}>Açıklama</h2>
-            <p className="description">{l.description}</p>
+            <h2 style={{ marginTop: 30 }}>{tr("Açıklama")}</h2>
+            {locale !== "tr" && !localized.translatedDescription && (
+              <p className="quiet translation-note">
+                {tr(
+                  "Bu ilanın açıklaması henüz seçtiğiniz dilde eklenmemiştir. Orijinal metin gösteriliyor.",
+                )}
+              </p>
+            )}
+            <p className="description" lang={localized.descriptionLanguage}>
+              {localized.description}
+            </p>
             <p className="quiet" style={{ fontSize: 14 }}>
-              İlan tarihi: {l.createdAt.toLocaleDateString("tr-TR")} ·
-              Güncelleme: {l.updatedAt.toLocaleDateString("tr-TR")}
+              {tr("İlan tarihi:")} {l.createdAt.toLocaleDateString(intlLocale)}{" "}
+              {tr("· Güncelleme:")} {l.updatedAt.toLocaleDateString(intlLocale)}
             </p>
           </div>
           <NearbyPlaces
@@ -303,12 +335,12 @@ export default async function Detail({
             {features.some(
               (f) => f.name === "Kat karşılığı" && f.value === "Evet",
             )
-              ? "Kat karşılığına uygun"
-              : money(l.price, l.currency)}
+              ? tr("Kat karşılığına uygun")
+              : money(l.price, l.currency, intlLocale)}
           </strong>
 
           <h3>{r.owner.name}</h3>
-          <p className="quiet">İlan sahibi</p>
+          <p className="quiet">{tr("İlan sahibi")}</p>
           {phone && (
             <div className="stack">
               <a
@@ -322,11 +354,11 @@ export default async function Detail({
               <a
                 className="button secondary"
                 style={{ width: "100%" }}
-                href={`https://wa.me/${phone.replace("+", "")}?text=${encodeURIComponent(l.title + " hakkında bilgi almak istiyorum.")}`}
+                href={`https://wa.me/${phone.replace("+", "")}?text=${encodeURIComponent(tr("{title} hakkında bilgi almak istiyorum.", { title: localized.title }))}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                WhatsApp ile iletişim
+                {tr("WhatsApp ile iletişim")}{" "}
               </a>
             </div>
           )}
@@ -336,13 +368,13 @@ export default async function Detail({
               className="button secondary"
               style={{ marginTop: 20 }}
             >
-              İlanı düzenle
+              {tr("İlanı düzenle")}{" "}
             </Link>
           )}
         </aside>
       </div>
       <section className="section">
-        <h2>Benzer ilanlar</h2>
+        <h2>{tr("Benzer ilanlar")}</h2>
         <Cards
           items={similar.items.filter((i) => i.listing.id !== l.id).slice(0, 3)}
         />

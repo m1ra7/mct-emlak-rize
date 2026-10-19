@@ -1,29 +1,5 @@
-import { Building2 } from "lucide-react";
-import Link from "next/link";
-export function Empty({
-  title = "Yeni adresler yakında burada.",
-  text = "Portföyümüze eklenen gayrimenkuller burada yer alacak. Aradığınız yeri bize anlatabilirsiniz.",
-  href,
-  label,
-}: {
-  title?: string;
-  text?: string;
-  href?: string;
-  label?: string;
-}) {
-  return (
-    <div className="empty">
-      <Building2 size={36} />
-      <h3>{title}</h3>
-      <p>{text}</p>
-      {href && (
-        <Link className="button secondary" href={href}>
-          {label || "İlanlara göz at"}
-        </Link>
-      )}
-    </div>
-  );
-}
+import { Empty } from "./empty-state";
+export { Empty };
 export function ServiceUnavailable() {
   return (
     <div className="wrap">
@@ -34,8 +10,8 @@ export function ServiceUnavailable() {
     </div>
   );
 }
-export function money(price: string, currency = "TRY") {
-  return new Intl.NumberFormat("tr-TR", {
+export function money(price: string, currency = "TRY", locale = "tr-TR") {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
     maximumFractionDigits: 0,

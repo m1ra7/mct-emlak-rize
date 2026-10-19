@@ -81,11 +81,13 @@ test("Vektör harita: iğne seçme, sürükleme, mesaj güvenliği ve salt okunu
     const parent = { postMessage: (data) => sent.push(data) },
       origin = "http://localhost:3107";
     const source = readFileSync("public/vector-map.js", "utf8").replace(
-      /^import[\s\S]*?from [^;]+;/,
+      /^import[\s\S]*?from [^;]+;\s*/gm,
       "",
     );
     runInNewContext(source, {
       Map: FakeMap,
+      mapTr: (text) => text,
+      mapLocale: "tr-TR",
       globalThis: { Map },
       Popup: class {
         setDOMContent() {

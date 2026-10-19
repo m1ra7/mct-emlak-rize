@@ -157,9 +157,17 @@ export function ListingForm({
                 "İç Özellikler",
                 "Dış Özellikler",
                 "WC Sayısı",
-              ].includes(x.name),
+              ].includes(x.name) && !x.name.startsWith("i18n."),
           ),
           ...metadata,
+          ...(["en", "de"] as const).flatMap((locale) =>
+            ["title", "description"].flatMap((field) => {
+              const value = String(
+                f.get(`i18n.${locale}.${field}`) || "",
+              ).trim();
+              return value ? [{ name: `i18n.${locale}.${field}`, value }] : [];
+            }),
+          ),
           ...(rentalApartment && String(f.get("wcCount") || "").trim() !== ""
             ? [{ name: "WC Sayısı", value: String(f.get("wcCount")) }]
             : []),
@@ -693,6 +701,42 @@ export function ListingForm({
             />
           </>
         )}
+        <details className="field span listing-translations">
+          <summary>İlan çevirileri (isteğe bağlı)</summary>
+          <p className="quiet">
+            İngilizce ve Almanca başlık ve açıklama ekleyebilirsiniz. Bu alanlar
+            boşsa ziyaretçiye orijinal Türkçe metin gösterilir.
+          </p>
+          {(
+            [
+              ["en", "English"],
+              ["de", "Deutsch"],
+            ] as const
+          ).map(([language, label]) => (
+            <fieldset key={language} lang={language}>
+              <legend>{label}</legend>
+              <label htmlFor={`i18n-${language}-title`}>
+                İlan başlığı · {label}
+              </label>
+              <input
+                id={`i18n-${language}-title`}
+                name={`i18n.${language}.title`}
+                maxLength={180}
+                defaultValue={meta(`i18n.${language}.title`) || ""}
+              />
+              <label htmlFor={`i18n-${language}-description`}>
+                Açıklama · {label}
+              </label>
+              <textarea
+                id={`i18n-${language}-description`}
+                name={`i18n.${language}.description`}
+                maxLength={1600}
+                rows={5}
+                defaultValue={meta(`i18n.${language}.description`) || ""}
+              />
+            </fieldset>
+          ))}
+        </details>
         <div className="field span">
           <label>
             Ek özellikler
@@ -713,7 +757,7 @@ export function ListingForm({
                       "İç Özellikler",
                       "Dış Özellikler",
                       "WC Sayısı",
-                    ].includes(f.name),
+                    ].includes(f.name) && !f.name.startsWith("i18n."),
                 )
                 .map((f) => `${f.name}: ${f.value}`)
                 .join("\n")}

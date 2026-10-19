@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@/components/locale-provider";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { Cards, type ListingResult } from "@/components/listings";
@@ -12,6 +13,7 @@ export function HomePortfolio({
   featured: Items;
   latest: Items;
 }) {
+  const { tr } = useTranslations();
   const [active, setActive] = useState<"featured" | "latest">("featured");
   const featuredTab = useRef<HTMLButtonElement>(null);
   const latestTab = useRef<HTMLButtonElement>(null);
@@ -26,14 +28,13 @@ export function HomePortfolio({
   }
 
   const items = active === "featured" ? featured : latest;
-  const title = active === "featured" ? "Öne çıkanlar" : "Yeni eklenenler";
 
   return (
     <div className="home-portfolio-switcher">
       <div
         className="home-portfolio-segments"
         role="tablist"
-        aria-label="Portföy ilanları"
+        aria-label={tr("Portföy ilanları")}
       >
         <button
           ref={featuredTab}
@@ -46,8 +47,7 @@ export function HomePortfolio({
           onClick={() => setActive("featured")}
           onKeyDown={onTabKeyDown}
         >
-          Öne çıkanlar
-          <span>{featured.length}</span>
+          {tr("Öne çıkanlar")} <span>{featured.length}</span>
         </button>
         <button
           ref={latestTab}
@@ -60,8 +60,7 @@ export function HomePortfolio({
           onClick={() => setActive("latest")}
           onKeyDown={onTabKeyDown}
         >
-          Yeni eklenenler
-          <span>{latest.length}</span>
+          {tr("Yeni eklenenler")} <span>{latest.length}</span>
         </button>
       </div>
       <div
@@ -78,15 +77,19 @@ export function HomePortfolio({
         ) : (
           <p className="quiet home-listings-empty">
             {active === "featured"
-              ? "Öne çıkarılan ilanlar burada görünecek."
-              : "Yeni ilanlar eklendikçe burada görünecek."}
+              ? tr("Öne çıkarılan ilanlar burada görünecek.")
+              : tr("Yeni ilanlar eklendikçe burada görünecek.")}
           </p>
         )}
         <div className="home-portfolio-more">
           <Link
             href={active === "featured" ? "/ilanlar?featured=true" : "/ilanlar"}
           >
-            {title} ilanların tümünü gör
+            {tr(
+              active === "featured"
+                ? "Tüm öne çıkan ilanları gör"
+                : "Tüm yeni ilanları gör",
+            )}{" "}
           </Link>
         </div>
       </div>
