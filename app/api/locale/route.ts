@@ -12,6 +12,16 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
+  return languageResponse(request, value, !!json);
+}
+export function GET(request: NextRequest) {
+  return languageResponse(
+    request,
+    request.nextUrl.searchParams.get("locale"),
+    false,
+  );
+}
+function languageResponse(request: NextRequest, value: unknown, json: boolean) {
   if (!isLocale(value))
     return NextResponse.json(
       { error: "Unsupported language" },

@@ -55,11 +55,14 @@ try {
       .replace(/<[^>]*>/g, " ")
       .replace(/\s+/g, " ");
     assert.ok(visible.includes(title), `${locale}: homepage title`);
-    assert.ok(html.indexOf("footer-languages") > html.indexOf("footer-bottom"));
+    assert.ok(
+      html.indexOf("footer-languages") > html.indexOf("footer-note") &&
+        html.indexOf("footer-languages") < html.indexOf("footer-bottom"),
+    );
     assert.match(
       html,
       new RegExp(
-        `value="${locale}"[^>]*aria-pressed="true"|aria-pressed="true"[^>]*value="${locale}"`,
+        `data-locale="${locale}"[^>]*aria-current="true"|aria-current="true"[^>]*data-locale="${locale}"`,
       ),
     );
     const contactHtml = await (
@@ -75,6 +78,13 @@ try {
     assert.ok(savedHtml.includes(saved), `${locale}: saved properties heading`);
     console.log(`${locale}: cookie → homepage → contact → saved properties OK`);
   }
+  const link = await fetch(base + "/api/locale?locale=de", {
+    headers: { referer: base + "/favoriler" },
+    redirect: "manual",
+  });
+  assert.equal(link.status, 303);
+  assert.equal(link.headers.get("location"), base + "/favoriler");
+  assert.match(link.headers.get("set-cookie"), /mct-locale=de/);
   const invalid = await fetch(base + "/api/locale", {
     method: "POST",
     headers: { "content-type": "application/json" },

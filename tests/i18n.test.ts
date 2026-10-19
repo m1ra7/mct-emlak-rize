@@ -5,7 +5,7 @@ import { translator, isLocale } from "../lib/i18n/shared";
 import { listingText } from "../lib/listing-i18n";
 import { money } from "../components/ui";
 import { NextRequest } from "next/server";
-import { POST } from "../app/api/locale/route";
+import { GET, POST } from "../app/api/locale/route";
 
 test("English and German preserve variables and Turkish remains the default", () => {
   assert.equal(translator("en")("Satılık"), "For sale");
@@ -127,5 +127,23 @@ test("Language endpoint saves an allowlisted language, rejects invalid values an
   assert.equal(
     localForm.headers.get("location"),
     "http://127.0.0.1:3128/ilanlar?view=list&sort=priceAsc",
+  );
+});
+
+test("Text language links work without JavaScript and reject unsupported locales", () => {
+  const response = GET(
+    new NextRequest("https://mct.example/api/locale?locale=de", {
+      headers: { referer: "https://mct.example/ilanlar?view=list" },
+    }),
+  );
+  assert.equal(response.status, 303);
+  assert.equal(
+    response.headers.get("location"),
+    "https://mct.example/ilanlar?view=list",
+  );
+  assert.match(response.headers.get("set-cookie") || "", /mct-locale=de/);
+  assert.equal(
+    GET(new NextRequest("https://mct.example/api/locale?locale=fr")).status,
+    400,
   );
 });

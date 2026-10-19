@@ -3961,54 +3961,52 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
   gap: 0;
 }
 
-/* Language controls live at the very bottom, with comfortable mobile targets. */
-.footer-languages {
-  border-top: 1px solid var(--line);
-  padding: 20px 0 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Plain language links sit directly below the regional footer heading. */
+.site-footer .footer-note {
+  display: block;
 }
-.footer-languages form {
-  display: flex;
-  justify-content: flex-end;
-}
-.footer-languages fieldset {
-  border: 0;
-  margin: 0;
+.footer-note .footer-languages {
+  margin: 8px 0 12px;
   padding: 0;
-  min-width: 0;
+  border: 0;
 }
-.footer-languages legend {
+.footer-languages .language-options {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.footer-languages .language-options a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 2px 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   color: var(--muted);
   font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
 }
-.language-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.language-options button {
-  min-height: 44px;
-  padding: 9px 18px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
+.footer-languages .language-options a:hover,
+.footer-languages .language-options a[aria-current="true"] {
   color: var(--ink);
-  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
-.language-options button[aria-pressed="true"] {
-  color: var(--green);
-  border-color: var(--green);
-  background: var(--mint);
-  font-weight: 700;
-}
-.language-options button:disabled {
+.footer-languages .language-options a[aria-disabled="true"] {
   cursor: wait;
-  opacity: 0.7;
+}
+.footer-languages .language-divider {
+  color: var(--muted);
+  font-size: 12px;
+  opacity: 0.5;
+}
+@media (max-width: 1100px) {
+  .site-footer .footer-note {
+    grid-column: 1 / -1;
+  }
 }
 .listing-translations {
   border: 1px solid var(--line);
@@ -4043,20 +4041,6 @@ html:not([lang="tr"]) .home-hero h1 {
   overflow-wrap: normal;
 }
 @media (max-width: 640px) {
-  .footer-languages {
-    margin-inline: 20px;
-  }
-  .footer-languages form,
-  .footer-languages fieldset {
-    width: 100%;
-  }
-  .language-options {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .language-options button {
-    padding-inline: 8px;
-  }
   html:not([lang="tr"]) .home-hero h1 {
     font-size: clamp(34px, 9vw, 50px);
   }
