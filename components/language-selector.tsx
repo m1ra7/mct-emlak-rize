@@ -1,17 +1,13 @@
 "use client";
 import { useState } from "react";
-import { ChevronRight, Globe2 } from "lucide-react";
+import { Globe2 } from "lucide-react";
 import { useTranslations } from "./locale-provider";
 import { locales, localeNames, type Locale } from "@/lib/i18n/shared";
 export function LanguageSelector() {
   const { locale, tr } = useTranslations();
   const [pending, setPending] = useState<Locale | null>(null);
   const [error, setError] = useState(false);
-  async function change(
-    event: React.MouseEvent<HTMLAnchorElement>,
-    next: Locale,
-  ) {
-    event.preventDefault();
+  async function change(next: Locale) {
     if (next === locale || pending) return;
     setPending(next);
     setError(false);
@@ -30,44 +26,38 @@ export function LanguageSelector() {
   }
   return (
     <div className="footer-languages">
-      <details className="language-disclosure">
-        <summary className="language-summary">
-          <Globe2 size={20} strokeWidth={1.7} aria-hidden="true" />
-          <span>{tr("Dil değiştir")}</span>
-          <span className="language-current" lang={locale}>
-            {localeNames[locale]}
-          </span>
-          <ChevronRight
-            className="language-chevron"
-            size={18}
-            aria-hidden="true"
-          />
-        </summary>
-        <nav
-          className="language-options"
+      <form
+        className="language-setting"
+        action="/api/locale"
+        method="post"
+        aria-busy={!!pending}
+      >
+        <label htmlFor="footer-language">
+          <Globe2 size={16} strokeWidth={1.5} aria-hidden="true" />
+        </label>
+        <select
+          id="footer-language"
+          name="locale"
+          value={pending ?? locale}
+          disabled={!!pending}
+          onChange={(event) => void change(event.target.value as Locale)}
           aria-label={tr("Dil seçimi")}
-          aria-busy={!!pending}
         >
           {locales.map((code) => (
-            <a
-              key={code}
-              href={`/api/locale?locale=${code}`}
-              lang={code}
-              hrefLang={code}
-              rel="nofollow"
-              data-locale={code}
-              aria-current={locale === code ? "true" : undefined}
-              aria-disabled={!!pending}
-              onClick={(event) => void change(event, code)}
-            >
+            <option key={code} value={code} lang={code}>
               {localeNames[code]}
-              {pending === code && (
-                <span className="sr-only">{tr("Kaydediliyor…")}</span>
-              )}
-            </a>
+            </option>
           ))}
-        </nav>
-      </details>
+        </select>
+        <noscript>
+          <button type="submit">{tr("Dil değiştir")}</button>
+        </noscript>
+        {pending && (
+          <span role="status" className="sr-only">
+            {tr("Kaydediliyor…")}
+          </span>
+        )}
+      </form>
       {error && (
         <p role="alert">{tr("Dil değiştirilemedi. Tekrar deneyin.")}</p>
       )}

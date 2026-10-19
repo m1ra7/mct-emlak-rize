@@ -62,7 +62,7 @@ try {
     assert.match(
       html,
       new RegExp(
-        `data-locale="${locale}"[^>]*aria-current="true"|aria-current="true"[^>]*data-locale="${locale}"`,
+        `<option[^>]*(?:value="${locale}"[^>]*selected|selected[^>]*value="${locale}")`,
       ),
     );
     const labels = {
@@ -70,12 +70,12 @@ try {
       en: "Change language",
       de: "Sprache ändern",
     };
-    assert.match(html, /<details class="language-disclosure">/);
+    assert.match(html, /<select[^>]*id="footer-language"/);
     assert.ok(
       html.includes(labels[locale]),
       `${locale}: language setting label`,
     );
-    assert.match(html, /class="language-current"/);
+    assert.ok(!html.includes("language-chevron"));
     const contactHtml = await (
       await fetch(base + "/iletisim", { headers: { cookie } })
     ).text();

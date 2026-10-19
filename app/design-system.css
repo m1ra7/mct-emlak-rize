@@ -3961,81 +3961,65 @@ html:not([data-theme="dark"]) .editorial-section .districts a:hover {
   gap: 0;
 }
 
-/* Compact language setting below the regional footer heading. */
+/* Native language select matches the regular footer links. */
 .site-footer .footer-note {
   display: block;
 }
 .footer-note .footer-languages {
-  margin: 8px 0 12px;
+  margin: 8px 0 0;
   padding: 0;
   border: 0;
 }
-.language-disclosure {
-  width: fit-content;
-  max-width: 100%;
-}
-.language-summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 2px 0;
-  list-style: none;
-  cursor: pointer;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 400;
-}
-.language-summary::-webkit-details-marker {
-  display: none;
-}
-.language-summary > svg {
-  flex: 0 0 auto;
-}
-.language-current {
-  margin-left: 8px;
-  font-weight: 600;
-}
-.language-chevron {
-  color: var(--muted);
-  transition: transform 0.18s ease;
-}
-.language-disclosure[open] .language-chevron {
-  transform: rotate(90deg);
-}
-.language-summary:focus-visible,
-.footer-languages .language-options a:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 4px;
-}
-.footer-languages .language-options {
+.footer-languages .language-setting {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  column-gap: 16px;
-  margin: 0 0 4px 28px;
-}
-.footer-languages .language-options a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 2px 0;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
+  gap: 8px;
   color: var(--muted);
+  font-family: inherit;
   font-size: 13px;
   font-weight: 400;
-  text-decoration: none;
 }
-.footer-languages .language-options a:hover,
-.footer-languages .language-options a[aria-current="true"] {
-  color: var(--ink);
+.footer-languages .language-setting label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+}
+.footer-languages .language-setting label svg {
+  flex: 0 0 auto;
+}
+.footer-languages .language-setting select {
+  appearance: none;
+  width: auto;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
   text-decoration: underline;
   text-underline-offset: 4px;
+  cursor: pointer;
 }
-.footer-languages .language-options a[aria-disabled="true"] {
+.footer-languages .language-setting select option {
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 400;
+}
+.footer-languages .language-setting select:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+.footer-languages .language-setting select:disabled {
   cursor: wait;
+  opacity: 0.7;
 }
 @media (max-width: 1100px) {
   .site-footer .footer-note {

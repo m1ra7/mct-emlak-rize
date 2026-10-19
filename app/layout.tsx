@@ -90,11 +90,11 @@ export default async function RootLayout({
               </div>
               <div className="footer-note">
                 <span>{tr("RİZE’DEN TÜRKİYE’YE")}</span>
-                <LanguageSelector />
                 <p>
                   {tr("Karadeniz ağırlıklı portföy.")} <br />
                   {tr("Türkiye’nin farklı şehirlerinde yeni fırsatlar.")}{" "}
                 </p>
+                <LanguageSelector />
               </div>
             </div>
             <div className="footer-bottom">
