@@ -10,6 +10,7 @@ import { Logo } from "@/components/logo";
 import "./globals.css";
 import "./typography.css";
 import "./design-system.css";
+import "./product-theme.css";
 import Script from "next/script";
 import { themeInit } from "@/lib/theme";
 const baseMetadata: Metadata = {

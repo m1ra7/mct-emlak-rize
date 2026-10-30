@@ -1,0 +1,473 @@
+/* MIRACSOFT surface treatment, using the existing MCT brand palette. */
+:root {
+  --product-radius: 12px;
+  --product-shadow:
+    0 3px 7px rgb(0 0 0 / 3.5%), 0 18px 42px -16px rgb(0 0 0 / 17%);
+  --product-shadow-hover:
+    0 4px 10px rgb(0 0 0 / 5%), 0 22px 46px -16px rgb(0 0 0 / 21%);
+  --product-shadow-small: 0 2px 7px rgb(0 0 0 / 8%);
+}
+html[data-theme="dark"] {
+  --product-shadow:
+    0 4px 10px rgb(0 0 0 / 20%), 0 24px 48px -18px rgb(0 0 0 / 65%);
+  --product-shadow-hover:
+    0 5px 12px rgb(0 0 0 / 25%), 0 28px 52px -18px rgb(0 0 0 / 70%);
+  --product-shadow-small: 0 3px 9px rgb(0 0 0 / 35%);
+}
+body {
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+.price {
+  font-weight: 600;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.button,
+.button.small {
+  border-radius: 9px;
+  font-weight: 600;
+  box-shadow: none;
+  transition:
+    background-color 160ms ease,
+    filter 160ms ease;
+}
+.button:hover {
+  transform: none;
+}
+.button.secondary {
+  box-shadow: var(--product-shadow-small);
+  border-color: transparent;
+}
+/* One quiet navigation surface rather than a card inside another surface. */
+.site-header {
+  padding: 0;
+  background: var(--header-bg);
+  box-shadow: var(--product-shadow-small);
+  backdrop-filter: blur(20px);
+}
+.site-header .nav {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 72px;
+  padding: 12px 28px;
+  backdrop-filter: none;
+}
+.nav-links {
+  font-size: 13px;
+  font-weight: 500;
+}
+.site-header .nav-contact,
+.site-header .nav-management {
+  border-radius: 9px;
+}
+.theme-toggle,
+.icon-button,
+.menu-button {
+  border-radius: 9px;
+  border-color: transparent;
+  box-shadow: var(--product-shadow-small);
+}
+.mobile-menu {
+  margin: 0 16px 12px;
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+/* Keep the established photograph and colours; simplify the surrounding shapes. */
+.home-hero {
+  border-radius: 14px;
+  box-shadow: var(--product-shadow);
+}
+.home-hero h1 {
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+.hero-overline {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  backdrop-filter: none;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+}
+.hero-copy > p {
+  line-height: 1.8;
+}
+.hero-cta-row .button {
+  border-radius: 9px;
+  font-weight: 600;
+}
+.hero-secondary > span {
+  border-radius: 9px;
+}
+.visual-card {
+  border-radius: var(--product-radius);
+  border-color: transparent;
+  box-shadow: var(--product-shadow);
+}
+.visual-card-icon {
+  border-radius: 9px;
+}
+.visual-card small {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.visual-card strong {
+  font-weight: 600;
+}
+.home-search {
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+.home-search .search-tabs {
+  border-radius: var(--product-radius) var(--product-radius) 0 0;
+  padding-inline: 24px;
+}
+.search-tabs a {
+  padding-inline: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.hero-search-form .button {
+  border-radius: 9px;
+}
+.category-strip > .category-card,
+.category-strip > .category-card:first-child,
+.category-strip > .category-card:last-child {
+  border: 0;
+  border-radius: var(--product-radius);
+  padding: 22px 24px;
+  box-shadow: var(--product-shadow);
+  transition:
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+.category-strip > .category-card > svg:first-child {
+  border-radius: 9px;
+}
+.category-strip strong {
+  font-weight: 600;
+}
+.category-strip > .category-card:hover {
+  box-shadow: var(--product-shadow-hover);
+  transform: none;
+}
+.section-heading h2,
+.editorial-copy h2,
+.contact-band h2 {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+.section-heading h2 {
+  font-size: clamp(27px, 3vw, 38px);
+  line-height: 1.22;
+}
+.portfolio-all-link,
+.home-portfolio-more a,
+.text-link {
+  font-weight: 500;
+}
+.home-portfolio-segments,
+html[data-theme="dark"] .home-portfolio-segments {
+  border: 0;
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+}
+.home-portfolio-segments button {
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  padding-inline: 18px;
+}
+.home-portfolio-segments button[aria-selected="true"],
+html[data-theme="dark"] .home-portfolio-segments button[aria-selected="true"] {
+  box-shadow: var(--product-shadow-small);
+}
+.home-portfolio-segments button span {
+  border-radius: 4px;
+}
+/* Inset photographs, restrained elevation and the same card geometry in both views. */
+.listing-cards {
+  gap: 24px;
+  align-items: stretch;
+}
+.listing-cards > .card,
+.listing-cards:not(.listing-cards-list) > .card,
+html[data-theme="dark"] .listing-cards:not(.listing-cards-list) > .card {
+  padding: 12px;
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+  transition: box-shadow 180ms ease;
+}
+.listing-cards > .card:hover,
+.listing-cards > .card:focus-within,
+html[data-theme="dark"] .listing-cards:not(.listing-cards-list) > .card:hover {
+  transform: none;
+  box-shadow: var(--product-shadow-hover);
+}
+.listing-cards:not(.listing-cards-list) > .card .photo,
+.portfolio-results .listing-cards-list .photo,
+.listing-cards-list > .card .photo {
+  border-radius: 8px;
+}
+.listing-cards:not(.listing-cards-list) > .card .cardbody {
+  padding: 20px 10px 10px;
+}
+.listing-cards .cardtitle,
+.listing-cards:not(.listing-cards-list) > .card .cardtitle {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+.listing-cards .price,
+.listing-cards:not(.listing-cards-list) > .card .price {
+  font-size: clamp(21px, 2vw, 25px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.listing-cards:not(.listing-cards-list) > .card .card-location {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.listing-cards .metadata {
+  border: 0;
+  gap: 14px;
+  justify-content: flex-start;
+}
+.card .photo .tag,
+.featured-label {
+  border-radius: 4px;
+  font-weight: 500;
+}
+.card .fav {
+  border-radius: 9px;
+  box-shadow: var(--product-shadow-small);
+}
+.card:hover .photo img {
+  transform: none;
+}
+/* Content surfaces share the same elevation in public pages and management. */
+.panel,
+.filter-panel,
+.contactcard,
+.region-card,
+.values-row > div,
+.stat,
+.dash > aside,
+.management-shell {
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+.empty {
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+  padding: 36px 24px;
+}
+.empty h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.editorial-section,
+html:not([data-theme="dark"]) .editorial-section {
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+.editorial-section {
+  padding: 36px;
+  gap: 36px;
+}
+.region-panel {
+  border: 0;
+  border-radius: var(--product-radius);
+  padding: 26px;
+  box-shadow: var(--product-shadow-small);
+}
+.region-heading {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.region-card {
+  transition: box-shadow 180ms ease;
+}
+.region-card:hover {
+  transform: none;
+  box-shadow: var(--product-shadow-hover);
+}
+.values-row > div {
+  padding: 28px;
+}
+.values-row h3 {
+  font-size: 17px;
+  font-weight: 600;
+}
+.values-row p {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.contact-band {
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+.contact-band .button {
+  border-radius: 9px;
+}
+.home-content .owner-contact-band {
+  padding: 32px;
+}
+.property-photo,
+.property-gallery-empty {
+  border: 0;
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+.photo-thumbnail,
+.photo-expand,
+.photo-counter {
+  border-radius: 8px;
+}
+.property-key-facts,
+.address-location,
+.new-listing-photos,
+.listing-translations,
+.nearby-place,
+.editor-publication-bar {
+  border-radius: var(--product-radius);
+}
+.nearby-place {
+  box-shadow: var(--product-shadow-small);
+}
+.page-intro h1,
+.admin-page-heading h1,
+.listing-detail-title {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+.dash > aside {
+  top: 92px;
+}
+.sidebar a {
+  border-radius: 8px;
+  font-weight: 500;
+}
+.stat {
+  padding: 24px;
+}
+.stat strong {
+  font-size: 30px;
+  font-weight: 600;
+}
+.stat-icon,
+.admin-brand > span,
+.management-lock {
+  border-radius: 9px;
+}
+.admin-brand strong {
+  font-weight: 600;
+}
+.table-scroll {
+  border-radius: var(--product-radius);
+  box-shadow: var(--product-shadow);
+}
+.table-scroll table {
+  box-shadow: none;
+}
+.auth-input,
+.auth-input input {
+  border-radius: 9px;
+}
+.site-footer {
+  border-top: 1px solid var(--line);
+}
+.footer-top > div > span {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+@media (max-width: 1000px) {
+  .site-header .nav {
+    min-height: 64px;
+    padding: 10px 16px;
+    gap: 12px;
+  }
+  .mobile-nav {
+    border-radius: 14px;
+    box-shadow: var(--product-shadow);
+  }
+  .mobile-nav a[aria-current="page"] {
+    border-radius: 9px;
+  }
+  .dash > aside {
+    top: auto;
+  }
+}
+@media (max-width: 759px) {
+  .listing-cards {
+    gap: 20px;
+  }
+  .editorial-section {
+    padding: 24px;
+    gap: 24px;
+  }
+  .region-panel {
+    padding: 22px;
+  }
+}
+@media (max-width: 640px) {
+  .home-hero {
+    border-radius: var(--product-radius);
+  }
+  .home-search .search-tabs {
+    padding-inline: 14px;
+  }
+  .search-tabs a {
+    padding-inline: 12px;
+    font-size: 12px;
+  }
+  .category-strip > .category-card,
+  .category-strip > .category-card:first-child,
+  .category-strip > .category-card:last-child {
+    padding: 20px;
+  }
+  .listing-cards > .card,
+  .listing-cards:not(.listing-cards-list) > .card {
+    padding: 10px;
+  }
+  .listing-cards:not(.listing-cards-list) > .card .cardbody {
+    padding: 17px 8px 8px;
+  }
+  .home-portfolio-segments button {
+    font-size: 12px;
+    padding-inline: 10px;
+  }
+  .home-content .owner-contact-band,
+  .values-row > div {
+    padding: 24px;
+  }
+  .section-heading h2 {
+    font-size: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .listing-cards > .card,
+  .category-strip > .category-card,
+  .region-card,
+  .button {
+    transition: none;
+  }
+}
